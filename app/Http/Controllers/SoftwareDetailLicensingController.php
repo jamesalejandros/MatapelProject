@@ -13,19 +13,39 @@ class SoftwareDetailLicensingController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->search;
+        // Ambil keyword pencarian
+        $search = trim($request->input('search'));
 
+        // Query data Detail Licensing beserta relasi Software Master
         $details = SoftwareDetailLicensing::with('software')
             ->when($search, function ($query) use ($search) {
-                $query->where('LicensingID', 'like', "%{$search}%")
-                    ->orWhere('LicensePool', 'like', "%{$search}%")
-                    ->orWhere('ProductFamily', 'like', "%{$search}%")
-                    ->orWhere('Version', 'like', "%{$search}%");
-            })
-            ->orderBy('id', 'desc')
-            ->paginate(10);
 
-        return view('software_detail.index', compact('details', 'search'));
+                $query->where(function ($q) use ($search) {
+
+                    $q->where('LicensingID', 'LIKE', "%{$search}%")
+                        ->orWhere('LicensePool', 'LIKE', "%{$search}%")
+                        ->orWhere('ProductFamily', 'LIKE', "%{$search}%")
+                        ->orWhere('Version', 'LIKE', "%{$search}%")
+                        ->orWhere('Quantity', 'LIKE', "%{$search}%")
+                        ->orWhereHas('software', function ($software) use ($search) {
+
+                            $software->where('LicensingID', 'LIKE', "%{$search}%")
+                                ->orWhere('Vendor', 'LIKE', "%{$search}%")
+                                ->orWhere('ParentProgram', 'LIKE', "%{$search}%");
+
+                        });
+
+                });
+
+            })
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('software_detail.index', [
+            'details' => $details,
+            'search'  => $search,
+        ]);
     }
 
     /**
@@ -35,7 +55,10 @@ class SoftwareDetailLicensingController extends Controller
     {
         $softwares = SoftwareMaster::orderBy('LicensingID')->get();
 
-        return view('software_detail.create', compact('softwares'));
+        return view(
+            'software_detail.create',
+            compact('softwares')
+        );
     }
 
     /**
@@ -44,15 +67,65 @@ class SoftwareDetailLicensingController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'SoftID' => 'required|exists:software_masters,SoftID',
-            'LicensingID' => 'nullable|max:50',
-            'LicensePool' => 'nullable|max:255',
-            'ProductFamily' => 'nullable|max:255',
-            'Version' => 'nullable|max:255',
-            'Quantity' => 'nullable|integer|min:1',
-            'Keterangan' => 'nullable',
-            'LastPrice' => 'nullable|numeric',
-            'LastBuyDate' => 'nullable|date',
+
+            'SoftID' => [
+                'required',
+                'exists:software_masters,SoftID'
+            ],
+
+            'LicensingID' => [
+                'nullable',
+                'string',
+                'max:50'
+            ],
+
+            'LicensePool' => [
+                'nullable',
+                'string',
+                'max:255'
+            ],
+
+            'ProductFamily' => [
+                'nullable',
+                'string',
+                'max:255'
+            ],
+
+            'Version' => [
+                'nullable',
+                'string',
+                'max:255'
+            ],
+
+            'Quantity' => [
+                'nullable',
+                'integer',
+                'min:1'
+            ],
+
+            'Keterangan' => [
+                'nullable',
+                'string'
+            ],
+
+            'LastPrice' => [
+                'nullable',
+                'numeric'
+            ],
+
+            'LastBuyDate' => [
+                'nullable',
+                'date'
+            ],
+
+        ], [
+
+            'SoftID.required'     => 'Software wajib dipilih.',
+            'SoftID.exists'       => 'Software tidak ditemukan.',
+            'Quantity.integer'    => 'Quantity harus berupa angka.',
+            'Quantity.min'        => 'Quantity minimal 1.',
+            'LastBuyDate.date'    => 'Format tanggal tidak valid.',
+
         ]);
 
         SoftwareDetailLicensing::create($validated);
@@ -69,7 +142,10 @@ class SoftwareDetailLicensingController extends Controller
     {
         $softwareDetail->load('software');
 
-        return view('software_detail.show', compact('softwareDetail'));
+        return view(
+            'software_detail.show',
+            compact('softwareDetail')
+        );
     }
 
     /**
@@ -79,7 +155,13 @@ class SoftwareDetailLicensingController extends Controller
     {
         $softwares = SoftwareMaster::orderBy('LicensingID')->get();
 
-        return view('software_detail.edit', compact('softwareDetail', 'softwares'));
+        return view(
+            'software_detail.edit',
+            compact(
+                'softwareDetail',
+                'softwares'
+            )
+        );
     }
 
     /**
@@ -88,15 +170,65 @@ class SoftwareDetailLicensingController extends Controller
     public function update(Request $request, SoftwareDetailLicensing $softwareDetail)
     {
         $validated = $request->validate([
-            'SoftID' => 'required|exists:software_masters,SoftID',
-            'LicensingID' => 'nullable|max:50',
-            'LicensePool' => 'nullable|max:255',
-            'ProductFamily' => 'nullable|max:255',
-            'Version' => 'nullable|max:255',
-            'Quantity' => 'nullable|integer|min:1',
-            'Keterangan' => 'nullable',
-            'LastPrice' => 'nullable|numeric',
-            'LastBuyDate' => 'nullable|date',
+
+            'SoftID' => [
+                'required',
+                'exists:software_masters,SoftID'
+            ],
+
+            'LicensingID' => [
+                'nullable',
+                'string',
+                'max:50'
+            ],
+
+            'LicensePool' => [
+                'nullable',
+                'string',
+                'max:255'
+            ],
+
+            'ProductFamily' => [
+                'nullable',
+                'string',
+                'max:255'
+            ],
+
+            'Version' => [
+                'nullable',
+                'string',
+                'max:255'
+            ],
+
+            'Quantity' => [
+                'nullable',
+                'integer',
+                'min:1'
+            ],
+
+            'Keterangan' => [
+                'nullable',
+                'string'
+            ],
+
+            'LastPrice' => [
+                'nullable',
+                'numeric'
+            ],
+
+            'LastBuyDate' => [
+                'nullable',
+                'date'
+            ],
+
+        ], [
+
+            'SoftID.required'     => 'Software wajib dipilih.',
+            'SoftID.exists'       => 'Software tidak ditemukan.',
+            'Quantity.integer'    => 'Quantity harus berupa angka.',
+            'Quantity.min'        => 'Quantity minimal 1.',
+            'LastBuyDate.date'    => 'Format tanggal tidak valid.',
+
         ]);
 
         $softwareDetail->update($validated);
@@ -118,3 +250,4 @@ class SoftwareDetailLicensingController extends Controller
             ->with('success', 'Detail licensing berhasil dihapus.');
     }
 }
+

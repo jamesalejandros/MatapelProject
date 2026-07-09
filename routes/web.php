@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SoftwareMasterController;
 use App\Http\Controllers\SoftwareDetailLicensingController;
-
+use App\Http\Controllers\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -32,7 +32,10 @@ require __DIR__.'/auth.php';
 Route::middleware(['auth', 'verified'])->group(function () {
 
     // Dashboard
-    Route::view('/dashboard', 'dashboard')->name('dashboard');
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
     // Profile
     Route::controller(ProfileController::class)->group(function () {
