@@ -1,23 +1,22 @@
-
 @extends('layouts.app')
 
 @section('content')
 
 <div class="min-h-screen bg-slate-100">
 
-    <!-- Header -->
+    {{-- ================= HEADER ================= --}}
 
-    <div class="bg-gradient-to-r from-violet-700 via-purple-700 to-fuchsia-600 shadow-lg">
+    <div class="bg-gradient-to-r from-violet-700 via-purple-700 to-fuchsia-600 shadow-xl">
 
-        <div class="max-w-5xl mx-auto px-6 py-10">
+        <div class="max-w-6xl mx-auto px-6 py-10">
 
-            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
 
-                <div class="flex items-center gap-4 text-white">
+                <div class="flex items-center gap-5 text-white">
 
-                    <div class="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center">
+                    <div class="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center shadow-lg">
 
-                        <i class="bi bi-pencil-square text-4xl"></i>
+                        <i class="bi bi-pencil-square text-4xl text-white"></i>
 
                     </div>
 
@@ -31,7 +30,7 @@
 
                         <p class="text-purple-100 mt-1">
 
-                            Perbarui informasi detail licensing software.
+                            Perbarui informasi Detail Licensing yang terhubung dengan Software Master.
 
                         </p>
 
@@ -39,12 +38,12 @@
 
                 </div>
 
-                <a href="{{ route('software-detail.index') }}"
-                    class="inline-flex items-center gap-2 bg-white text-purple-700 font-semibold px-6 py-3 rounded-xl shadow hover:shadow-xl hover:scale-105 transition">
+                <a href="{{ route('software-master.index') }}"
+                   class="inline-flex items-center gap-2 bg-white text-purple-700 font-semibold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200">
 
-                    <i class="bi bi-arrow-left"></i>
+                    <i class="bi bi-arrow-left text-purple-700"></i>
 
-                    Kembali
+                    <span>Kembali</span>
 
                 </a>
 
@@ -56,33 +55,43 @@
 
     <div class="max-w-5xl mx-auto px-6 py-8">
 
-        {{-- Validation Error --}}
+        {{-- ================= VALIDATION ================= --}}
 
         @if($errors->any())
 
-            <div class="bg-red-50 border border-red-200 rounded-2xl p-6 mb-6">
+            <div class="mb-8 rounded-2xl border border-red-200 bg-red-50 p-6 shadow-sm">
 
-                <div class="flex items-center gap-3 text-red-700">
+                <div class="flex items-center gap-3">
 
-                    <i class="bi bi-exclamation-triangle-fill text-xl"></i>
+                    <div class="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center">
 
-                    <h3 class="font-bold">
+                        <i class="bi bi-exclamation-triangle-fill text-red-600 text-xl"></i>
 
-                        Terjadi kesalahan validasi
+                    </div>
 
-                    </h3>
+                    <div>
+
+                        <h3 class="font-bold text-red-700">
+
+                            Validasi Gagal
+
+                        </h3>
+
+                        <p class="text-sm text-red-500">
+
+                            Mohon periksa kembali data yang Anda masukkan.
+
+                        </p>
+
+                    </div>
 
                 </div>
 
-                <ul class="mt-4 list-disc list-inside text-sm text-red-600 space-y-1">
+                <ul class="mt-5 space-y-2 text-sm text-red-600 list-disc list-inside">
 
                     @foreach($errors->all() as $error)
 
-                        <li>
-
-                            {{ $error }}
-
-                        </li>
+                        <li>{{ $error }}</li>
 
                     @endforeach
 
@@ -92,31 +101,34 @@
 
         @endif
 
-        <!-- Form Card -->
+        {{-- ================= FORM CARD ================= --}}
 
-        <div class="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden">
+        <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200">
 
-            <div class="px-8 py-6 border-b border-slate-200">
+            {{-- Card Header --}}
 
-                <div class="flex items-center gap-3">
+            <div class="px-8 py-6 border-b border-slate-200 bg-slate-50">
 
-                    <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
+                <div class="flex items-center gap-4">
 
-                        <i class="bi bi-file-earmark-text text-purple-600"></i>
+                    <div class="w-12 h-12 rounded-2xl bg-purple-100 flex items-center justify-center">
+
+                        <i class="bi bi-file-earmark-text-fill text-purple-600 text-xl"></i>
 
                     </div>
 
                     <div>
 
-                        <h2 class="text-xl font-bold text-slate-800">
+                        <h2 class="text-2xl font-bold text-slate-800">
 
                             Form Edit Detail Licensing
 
                         </h2>
 
-                        <p class="text-sm text-slate-500">
+                        <p class="text-slate-500 text-sm mt-1">
 
-                            Perbarui data detail licensing kemudian simpan perubahan.
+                            Perbarui seluruh informasi Detail Licensing kemudian tekan tombol
+                            <strong>Update Detail</strong> untuk menyimpan perubahan.
 
                         </p>
 
@@ -126,6 +138,8 @@
 
             </div>
 
+            {{-- ================= FORM ================= --}}
+
             <form
                 action="{{ route('software-detail.update', $softwareDetail) }}"
                 method="POST"
@@ -134,11 +148,11 @@
                 @csrf
                 @method('PUT')
 
-                <!-- Row 1 -->
+                {{-- ================= ROW 1 ================= --}}
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                    <!-- Software -->
+                    {{-- SOFTWARE --}}
 
                     <div>
 
@@ -151,16 +165,16 @@
                         </label>
 
                         <select
-                            name="SoftID"
-                            class="w-full rounded-xl border-slate-300 focus:border-purple-500 focus:ring-purple-500 @error('SoftID') border-red-500 @enderror">
+                            name="LicensingID"
+                            class="w-full rounded-xl border-slate-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 @error('LicensingID') border-red-500 @enderror">
 
                             @foreach($softwares as $software)
 
                                 <option
-                                    value="{{ $software->SoftID }}"
-                                    {{ old('SoftID', $softwareDetail->SoftID) == $software->SoftID ? 'selected' : '' }}>
+                                    value="{{ $software->LicensingID }}"
+                                    {{ old('LicensingID', $softwareDetail->LicensingID) == $software->LicensingID ? 'selected' : '' }}>
 
-                                    {{ $software->LicensingID }} - {{ $software->Vendor }}
+                                    {{ $software->LicensingID }} — {{ $software->Vendor }}
 
                                 </option>
 
@@ -168,9 +182,9 @@
 
                         </select>
 
-                        @error('SoftID')
+                        @error('LicensingID')
 
-                            <p class="text-sm text-red-600 mt-2">
+                            <p class="mt-2 text-sm text-red-600">
 
                                 {{ $message }}
 
@@ -180,7 +194,7 @@
 
                     </div>
 
-                    <!-- Licensing ID -->
+                    {{-- LICENSING ID (READ ONLY) --}}
 
                     <div>
 
@@ -192,317 +206,331 @@
 
                         <input
                             type="text"
-                            name="LicensingID"
-                            value="{{ old('LicensingID', $softwareDetail->LicensingID) }}"
-                            placeholder="Contoh : LIC-DETAIL-001"
+                            value="{{ $softwareDetail->LicensingID }}"
+                            readonly
+                            class="w-full rounded-xl bg-slate-100 border-slate-300 text-slate-600 cursor-not-allowed shadow-sm">
 
-                            class="w-full rounded-xl border-slate-300 focus:border-purple-500 focus:ring-purple-500 @error('LicensingID') border-red-500 @enderror">
+                        <p class="text-xs text-slate-500 mt-2">
 
-                        @error('LicensingID')
-
-                            <p class="text-sm text-red-600 mt-2">
-
-                                {{ $message }}
-
-                            </p>
-
-                        @enderror
-
-                    </div>
-
-                </div>
-
-                <!-- lanjut Part 2 -->
-
-
-                <!-- Row 2 -->
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-
-                    <!-- License Pool -->
-
-                    <div>
-
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">
-
-                            License Pool
-
-                        </label>
-
-                        <input
-                            type="text"
-                            name="LicensePool"
-                            value="{{ old('LicensePool', $softwareDetail->LicensePool) }}"
-                            placeholder="Contoh : Enterprise Pool"
-
-                            class="w-full rounded-xl border-slate-300 focus:border-purple-500 focus:ring-purple-500 @error('LicensePool') border-red-500 @enderror">
-
-                        @error('LicensePool')
-
-                            <p class="text-sm text-red-600 mt-2">
-
-                                {{ $message }}
-
-                            </p>
-
-                        @enderror
-
-                    </div>
-
-                    <!-- Product Family -->
-
-                    <div>
-
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">
-
-                            Product Family
-
-                        </label>
-
-                        <input
-                            type="text"
-                            name="ProductFamily"
-                            value="{{ old('ProductFamily', $softwareDetail->ProductFamily) }}"
-                            placeholder="Contoh : Microsoft Office"
-
-                            class="w-full rounded-xl border-slate-300 focus:border-purple-500 focus:ring-purple-500 @error('ProductFamily') border-red-500 @enderror">
-
-                        @error('ProductFamily')
-
-                            <p class="text-sm text-red-600 mt-2">
-
-                                {{ $message }}
-
-                            </p>
-
-                        @enderror
-
-                    </div>
-
-                </div>
-
-                <!-- Row 3 -->
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-
-                    <!-- Version -->
-
-                    <div>
-
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">
-
-                            Version
-
-                        </label>
-
-                        <input
-                            type="text"
-                            name="Version"
-                            value="{{ old('Version', $softwareDetail->Version) }}"
-                            placeholder="Contoh : 2024 / v16.0"
-
-                            class="w-full rounded-xl border-slate-300 focus:border-purple-500 focus:ring-purple-500 @error('Version') border-red-500 @enderror">
-
-                        @error('Version')
-
-                            <p class="text-sm text-red-600 mt-2">
-
-                                {{ $message }}
-
-                            </p>
-
-                        @enderror
-
-                    </div>
-
-                    <!-- Quantity -->
-
-                    <div>
-
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">
-
-                            Quantity
-
-                        </label>
-
-                        <input
-                            type="number"
-                            min="1"
-                            name="Quantity"
-                            value="{{ old('Quantity', $softwareDetail->Quantity) }}"
-                            placeholder="Contoh : 25"
-
-                            class="w-full rounded-xl border-slate-300 focus:border-purple-500 focus:ring-purple-500 @error('Quantity') border-red-500 @enderror">
-
-                        @error('Quantity')
-
-                            <p class="text-sm text-red-600 mt-2">
-
-                                {{ $message }}
-
-                            </p>
-
-                        @enderror
-
-                    </div>
-
-                </div>
-
-                <!-- Row 4 -->
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-
-                    <!-- Last Price -->
-
-                    <div>
-
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">
-
-                            Last Price
-
-                        </label>
-
-                        <input
-                            type="number"
-                            step="0.01"
-                            name="LastPrice"
-                            value="{{ old('LastPrice', $softwareDetail->LastPrice) }}"
-                            placeholder="Contoh : 1500000"
-
-                            class="w-full rounded-xl border-slate-300 focus:border-purple-500 focus:ring-purple-500 @error('LastPrice') border-red-500 @enderror">
-
-                        @error('LastPrice')
-
-                            <p class="text-sm text-red-600 mt-2">
-
-                                {{ $message }}
-
-                            </p>
-
-                        @enderror
-
-                    </div>
-
-                    <!-- Last Buy Date -->
-
-                    <div>
-
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">
-
-                            Last Buy Date
-
-                        </label>
-
-                        <input
-                            type="date"
-                            name="LastBuyDate"
-                            value="{{ old('LastBuyDate', optional($softwareDetail->LastBuyDate)->format('Y-m-d')) }}"
-
-                            class="w-full rounded-xl border-slate-300 focus:border-purple-500 focus:ring-purple-500 @error('LastBuyDate') border-red-500 @enderror">
-
-                        @error('LastBuyDate')
-
-                            <p class="text-sm text-red-600 mt-2">
-
-                                {{ $message }}
-
-                            </p>
-
-                        @enderror
-
-                    </div>
-
-                </div>
-
-                <!-- Keterangan -->
-
-                <div class="mt-6">
-
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">
-
-                        Keterangan
-
-                    </label>
-
-                    <textarea
-                        name="Keterangan"
-                        rows="5"
-                        placeholder="Masukkan keterangan tambahan apabila diperlukan..."
-
-                        class="w-full rounded-xl border-slate-300 focus:border-purple-500 focus:ring-purple-500 @error('Keterangan') border-red-500 @enderror">{{ old('Keterangan', $softwareDetail->Keterangan) }}</textarea>
-
-                    @error('Keterangan')
-
-                        <p class="text-sm text-red-600 mt-2">
-
-                            {{ $message }}
+                            Licensing ID mengikuti Software Master yang dipilih dan tidak dapat diubah secara manual.
 
                         </p>
 
-                    @enderror
-
-                </div>
-
-                <!-- Current Data Information -->
-
-                <div class="mt-8 bg-purple-50 border border-purple-100 rounded-xl p-5">
-
-                    <div class="flex gap-3">
-
-                        <div class="text-purple-600">
-
-                            <i class="bi bi-info-circle-fill text-xl"></i>
-
-                        </div>
-
-                        <div>
-
-                            <h4 class="font-semibold text-purple-800">
-
-                                Data Saat Ini
-
-                            </h4>
-
-                            <p class="text-sm text-purple-700 mt-1">
-
-                                Perubahan hanya akan diterapkan setelah tombol <strong>Update Detail</strong> ditekan.
-                                Pastikan seluruh informasi detail licensing sudah benar.
-
-                            </p>
-
-                        </div>
-
                     </div>
 
                 </div>
 
-                <!-- Buttons -->
+                {{-- ================= ROW 2 ================= --}}
+                {{-- ================= ROW 2 ================= --}}
 
-                <div class="flex justify-end gap-3 mt-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
 
-                    <button
-                        type="reset"
-                        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-slate-300 text-slate-600 font-semibold hover:bg-slate-100 transition">
+    {{-- License Pool --}}
 
-                        <i class="bi bi-arrow-clockwise"></i>
+    <div>
 
-                        Reset
+        <label class="block text-sm font-semibold text-slate-700 mb-2">
 
-                    </button>
+            License Pool
 
-                    <button
-                        type="submit"
-                        class="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-purple-600 text-white font-semibold hover:bg-purple-700 shadow-lg hover:shadow-xl transition">
+        </label>
 
-                        <i class="bi bi-save-fill"></i>
+        <input
+            type="text"
+            name="LicensePool"
+            value="{{ old('LicensePool', $softwareDetail->LicensePool) }}"
+            placeholder="Contoh : Enterprise Pool"
+            class="w-full rounded-xl border-slate-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 @error('LicensePool') border-red-500 @enderror">
 
-                        Update Detail
+        @error('LicensePool')
 
-                    </button>
+            <p class="mt-2 text-sm text-red-600">
+
+                {{ $message }}
+
+            </p>
+
+        @enderror
+
+    </div>
+
+    {{-- Product Family --}}
+
+    <div>
+
+        <label class="block text-sm font-semibold text-slate-700 mb-2">
+
+            Product Family
+
+        </label>
+
+        <input
+            type="text"
+            name="ProductFamily"
+            value="{{ old('ProductFamily', $softwareDetail->ProductFamily) }}"
+            placeholder="Contoh : Microsoft Office"
+            class="w-full rounded-xl border-slate-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 @error('ProductFamily') border-red-500 @enderror">
+
+        @error('ProductFamily')
+
+            <p class="mt-2 text-sm text-red-600">
+
+                {{ $message }}
+
+            </p>
+
+        @enderror
+
+    </div>
+
+</div>
+
+{{-- ================= ROW 3 ================= --}}
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+
+    {{-- Version --}}
+
+    <div>
+
+        <label class="block text-sm font-semibold text-slate-700 mb-2">
+
+            Version
+
+        </label>
+
+        <input
+            type="text"
+            name="Version"
+            value="{{ old('Version', $softwareDetail->Version) }}"
+            placeholder="Contoh : 2024 / v16.0"
+            class="w-full rounded-xl border-slate-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 @error('Version') border-red-500 @enderror">
+
+        @error('Version')
+
+            <p class="mt-2 text-sm text-red-600">
+
+                {{ $message }}
+
+            </p>
+
+        @enderror
+
+    </div>
+
+    {{-- Quantity --}}
+
+    <div>
+
+        <label class="block text-sm font-semibold text-slate-700 mb-2">
+
+            Quantity
+
+        </label>
+
+        <input
+            type="number"
+            min="1"
+            name="Quantity"
+            value="{{ old('Quantity', $softwareDetail->Quantity) }}"
+            placeholder="Contoh : 25"
+            class="w-full rounded-xl border-slate-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 @error('Quantity') border-red-500 @enderror">
+
+        @error('Quantity')
+
+            <p class="mt-2 text-sm text-red-600">
+
+                {{ $message }}
+
+            </p>
+
+        @enderror
+
+    </div>
+
+</div>
+
+{{-- ================= ROW 4 ================= --}}
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+
+    {{-- Last Price --}}
+
+    <div>
+
+        <label class="block text-sm font-semibold text-slate-700 mb-2">
+
+            Last Price
+
+        </label>
+
+        <div class="relative">
+
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-semibold">
+
+                Rp
+
+            </span>
+
+            <input
+                type="number"
+                step="0.01"
+                name="LastPrice"
+                value="{{ old('LastPrice', $softwareDetail->LastPrice) }}"
+                placeholder="1500000"
+                class="pl-12 w-full rounded-xl border-slate-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 @error('LastPrice') border-red-500 @enderror">
+
+        </div>
+
+        @error('LastPrice')
+
+            <p class="mt-2 text-sm text-red-600">
+
+                {{ $message }}
+
+            </p>
+
+        @enderror
+
+    </div>
+
+    {{-- Last Buy Date --}}
+
+    <div>
+
+        <label class="block text-sm font-semibold text-slate-700 mb-2">
+
+            Last Buy Date
+
+        </label>
+
+        <input
+            type="date"
+            name="LastBuyDate"
+            value="{{ old('LastBuyDate', optional($softwareDetail->LastBuyDate)->format('Y-m-d')) }}"
+            class="w-full rounded-xl border-slate-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 @error('LastBuyDate') border-red-500 @enderror">
+
+        @error('LastBuyDate')
+
+            <p class="mt-2 text-sm text-red-600">
+
+                {{ $message }}
+
+            </p>
+
+        @enderror
+
+    </div>
+
+</div>
+
+{{-- ================= KETERANGAN ================= --}}
+
+<div class="mt-8">
+
+    <label class="block text-sm font-semibold text-slate-700 mb-2">
+
+        Keterangan
+
+    </label>
+
+    <textarea
+        name="Keterangan"
+        rows="5"
+        placeholder="Masukkan keterangan tambahan apabila diperlukan..."
+        class="w-full rounded-xl border-slate-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 @error('Keterangan') border-red-500 @enderror">{{ old('Keterangan', $softwareDetail->Keterangan) }}</textarea>
+
+    @error('Keterangan')
+
+        <p class="mt-2 text-sm text-red-600">
+
+            {{ $message }}
+
+        </p>
+
+    @enderror
+
+</div>
+
+{{-- ================= SUMMARY ================= --}}
+
+<div class="mt-10 rounded-2xl border border-purple-200 bg-gradient-to-r from-purple-50 via-violet-50 to-fuchsia-50 p-6">
+
+    <div class="flex items-start gap-4">
+
+        <div class="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center flex-shrink-0">
+
+            <i class="bi bi-info-circle-fill text-purple-600 text-xl"></i>
+
+        </div>
+
+        <div class="flex-1">
+
+            <h3 class="text-lg font-bold text-purple-800">
+
+                Informasi Detail Licensing
+
+            </h3>
+
+            <p class="text-sm text-purple-700 mt-2 leading-7">
+
+                Pastikan seluruh data telah benar sebelum melakukan proses update.
+                Detail Licensing ini terhubung langsung dengan Software Master berdasarkan
+                <strong>Licensing ID</strong> yang dipilih.
+
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+
+                <div class="rounded-xl bg-white border border-purple-100 p-4">
+
+                    <p class="text-xs uppercase text-slate-500">
+
+                        Licensing ID
+
+                    </p>
+
+                    <h4 class="font-bold text-slate-800 mt-1">
+
+                        {{ $softwareDetail->LicensingID }}
+
+                    </h4>
 
                 </div>
 
-            </form>
+                <div class="rounded-xl bg-white border border-purple-100 p-4">
+
+                    <p class="text-xs uppercase text-slate-500">
+
+                        Product Family
+
+                    </p>
+
+                    <h4 class="font-bold text-slate-800 mt-1">
+
+                        {{ $softwareDetail->ProductFamily ?: '-' }}
+
+                    </h4>
+
+                </div>
+
+                <div class="rounded-xl bg-white border border-purple-100 p-4">
+
+                    <p class="text-xs uppercase text-slate-500">
+
+                        Quantity
+
+                    </p>
+
+                    <h4 class="font-bold text-slate-800 mt-1">
+
+                        {{ $softwareDetail->Quantity ?: '-' }}
+
+                    </h4>
+
+                </div>
+
+            </div>
 
         </div>
 
@@ -510,36 +538,169 @@
 
 </div>
 
+{{-- ================= ACTION BUTTON ================= --}}
+<div class="mt-10 flex flex-col sm:flex-row justify-end gap-4">
+
+    {{-- RESET --}}
+    <button
+        type="reset"
+        class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-slate-300 bg-white text-slate-700 font-semibold shadow-sm hover:bg-slate-100 hover:shadow transition-all duration-200">
+
+        <i class="bi bi-arrow-clockwise text-slate-700"></i>
+
+        <span>Reset</span>
+
+    </button>
+
+    {{-- UPDATE --}}
+    <button
+        type="submit"
+        class="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 text-white font-semibold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-200">
+
+        <i class="bi bi-floppy-fill text-white"></i>
+
+        <span>Update Detail</span>
+
+    </button>
+
 </div>
 
-<!-- lanjut Part 3 -->
+</form>
 
- id="wq9m2k"
+</div>
+
+</div>
+
+{{-- ================= JAVASCRIPT ================= --}}
+
 <script>
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
 
-    const inputs = document.querySelectorAll('input, select, textarea');
+    /*
+    |--------------------------------------------------------------------------
+    | INPUT EFFECT
+    |--------------------------------------------------------------------------
+    */
 
-    inputs.forEach(input => {
+    document.querySelectorAll('input, select, textarea').forEach(input => {
 
-        input.addEventListener('focus', function () {
+        input.addEventListener('focus', function(){
 
-            this.classList.add('ring-2', 'ring-purple-200');
+            this.classList.add(
+                'ring-2',
+                'ring-purple-300',
+                'border-purple-500'
+            );
 
         });
 
-        input.addEventListener('blur', function () {
+        input.addEventListener('blur', function(){
 
-            this.classList.remove('ring-2', 'ring-purple-200');
+            this.classList.remove(
+                'ring-2',
+                'ring-purple-300',
+                'border-purple-500'
+            );
 
         });
 
     });
+
+    /*
+    |--------------------------------------------------------------------------
+    | RESET CONFIRMATION
+    |--------------------------------------------------------------------------
+    */
+
+    const resetButton = document.querySelector('button[type="reset"]');
+
+    if(resetButton){
+
+        resetButton.addEventListener('click', function(e){
+
+            e.preventDefault();
+
+            Swal.fire({
+
+                title: 'Reset Form?',
+
+                text: 'Seluruh perubahan yang belum disimpan akan dibatalkan.',
+
+                icon: 'question',
+
+                showCancelButton: true,
+
+                confirmButtonColor: '#7c3aed',
+
+                cancelButtonColor: '#64748b',
+
+                confirmButtonText: 'Ya, Reset',
+
+                cancelButtonText: 'Batal'
+
+            }).then((result)=>{
+
+                if(result.isConfirmed){
+
+                    document.querySelector('form').reset();
+
+                }
+
+            });
+
+        });
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | UPDATE CONFIRMATION
+    |--------------------------------------------------------------------------
+    */
+
+    const form = document.querySelector('form');
+
+    if(form){
+
+        form.addEventListener('submit', function(e){
+
+            e.preventDefault();
+
+            Swal.fire({
+
+                title: 'Update Detail Licensing?',
+
+                text: 'Pastikan seluruh data sudah benar sebelum disimpan.',
+
+                icon: 'warning',
+
+                showCancelButton: true,
+
+                confirmButtonColor: '#7c3aed',
+
+                cancelButtonColor: '#64748b',
+
+                confirmButtonText: 'Ya, Update',
+
+                cancelButtonText: 'Batal'
+
+            }).then((result)=>{
+
+                if(result.isConfirmed){
+
+                    form.submit();
+
+                }
+
+            });
+
+        });
+
+    }
 
 });
 
 </script>
 
 @endsection
-

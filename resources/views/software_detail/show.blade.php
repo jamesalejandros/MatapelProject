@@ -49,7 +49,7 @@
 
                     </a>
 
-                    <a href="{{ route('software-detail.index') }}"
+                    <a href="{{ route('software-master.index') }}"
                         class="inline-flex items-center gap-2 bg-white/20 text-white border border-white/30 font-semibold px-5 py-3 rounded-xl hover:bg-white/30 transition">
 
                         <i class="bi bi-arrow-left"></i>
@@ -124,23 +124,7 @@
 
                     </div>
 
-                    <!-- Licensing ID -->
-
-                    <div class="bg-slate-50 rounded-xl p-5">
-
-                        <p class="text-sm text-slate-500">
-
-                            Licensing ID
-
-                        </p>
-
-                        <h3 class="font-bold text-slate-800 mt-1">
-
-                            {{ $softwareDetail->LicensingID ?? '-' }}
-
-                        </h3>
-
-                    </div>
+                    
 
                     <!-- License Pool -->
 

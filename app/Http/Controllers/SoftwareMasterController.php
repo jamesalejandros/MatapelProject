@@ -14,11 +14,12 @@ class SoftwareMasterController extends Controller
      */
     public function index(Request $request)
     {
-        // Ambil keyword pencarian
         $search = trim($request->input('search'));
 
-        // Query data Software Master beserta relasi Organization
-        $softwareMasters = SoftwareMaster::with('organization')
+        $softwareMasters = SoftwareMaster::with([
+                'organization',
+                'details'
+            ])
             ->when($search, function ($query) use ($search) {
 
                 $query->where(function ($q) use ($search) {
@@ -36,13 +37,15 @@ class SoftwareMasterController extends Controller
                 });
 
             })
-            ->latest('SoftID')
+            ->latest()
             ->paginate(10)
             ->withQueryString();
 
         return view('software_master.index', [
+
             'softwareMasters' => $softwareMasters,
             'search' => $search,
+
         ]);
     }
 
@@ -67,48 +70,69 @@ class SoftwareMasterController extends Controller
         $validated = $request->validate([
 
             'LicensingID' => [
-                'nullable',
+
+                'required',
                 'string',
-                'max:50'
+                'max:50',
+                'unique:software_masters,LicensingID'
+
             ],
 
             'OrganizationID' => [
+
                 'required',
                 'exists:organizations,OrganizationID'
+
             ],
 
             'EndDate' => [
+
                 'nullable',
                 'date'
+
             ],
 
             'Status' => [
+
                 'required',
+
                 Rule::in([
+
                     'Active',
                     'Expired',
                     'Inactive'
+
                 ])
+
             ],
 
             'ParentProgram' => [
+
                 'nullable',
                 'string',
                 'max:255'
+
             ],
 
             'Vendor' => [
+
                 'nullable',
                 'string',
                 'max:255'
+
             ],
 
         ], [
 
+            'LicensingID.required' => 'Licensing ID wajib diisi.',
+            'LicensingID.unique' => 'Licensing ID sudah digunakan.',
+
             'OrganizationID.required' => 'Organization wajib dipilih.',
             'OrganizationID.exists' => 'Organization tidak ditemukan.',
+
             'Status.required' => 'Status wajib dipilih.',
             'Status.in' => 'Status tidak valid.',
+
             'EndDate.date' => 'Format tanggal tidak valid.',
 
         ]);
@@ -117,7 +141,10 @@ class SoftwareMasterController extends Controller
 
         return redirect()
             ->route('software-master.index')
-            ->with('success', 'Data software licensing berhasil ditambahkan.');
+            ->with(
+                'success',
+                'Data software licensing berhasil ditambahkan.'
+            );
     }
 
     /**
@@ -126,8 +153,10 @@ class SoftwareMasterController extends Controller
     public function show(SoftwareMaster $softwareMaster)
     {
         $softwareMaster->load([
+
             'organization',
             'details'
+
         ]);
 
         return view(
@@ -160,48 +189,74 @@ class SoftwareMasterController extends Controller
         $validated = $request->validate([
 
             'LicensingID' => [
-                'nullable',
+
+                'required',
                 'string',
-                'max:50'
+                'max:50',
+
+                Rule::unique('software_masters', 'LicensingID')
+                    ->ignore(
+                        $softwareMaster->LicensingID,
+                        'LicensingID'
+                    ),
+
             ],
 
             'OrganizationID' => [
+
                 'required',
                 'exists:organizations,OrganizationID'
+
             ],
 
             'EndDate' => [
+
                 'nullable',
                 'date'
+
             ],
 
             'Status' => [
+
                 'required',
+
                 Rule::in([
+
                     'Active',
                     'Expired',
                     'Inactive'
+
                 ])
+
             ],
 
             'ParentProgram' => [
+
                 'nullable',
                 'string',
                 'max:255'
+
             ],
 
             'Vendor' => [
+
                 'nullable',
                 'string',
                 'max:255'
+
             ],
 
         ], [
 
+            'LicensingID.required' => 'Licensing ID wajib diisi.',
+            'LicensingID.unique' => 'Licensing ID sudah digunakan.',
+
             'OrganizationID.required' => 'Organization wajib dipilih.',
             'OrganizationID.exists' => 'Organization tidak ditemukan.',
+
             'Status.required' => 'Status wajib dipilih.',
             'Status.in' => 'Status tidak valid.',
+
             'EndDate.date' => 'Format tanggal tidak valid.',
 
         ]);
@@ -210,11 +265,14 @@ class SoftwareMasterController extends Controller
 
         return redirect()
             ->route('software-master.index')
-            ->with('success', 'Data software licensing berhasil diperbarui.');
+            ->with(
+                'success',
+                'Data software licensing berhasil diperbarui.'
+            );
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource.
      */
     public function destroy(SoftwareMaster $softwareMaster)
     {
@@ -232,6 +290,9 @@ class SoftwareMasterController extends Controller
 
         return redirect()
             ->route('software-master.index')
-            ->with('success', 'Data software licensing berhasil dihapus.');
+            ->with(
+                'success',
+                'Data software licensing berhasil dihapus.'
+            );
     }
 }

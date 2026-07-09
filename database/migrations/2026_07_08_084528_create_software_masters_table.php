@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -12,9 +13,7 @@ return new class extends Migration {
     {
         Schema::create('software_masters', function (Blueprint $table) {
 
-            $table->id('SoftID');
-
-            $table->string('LicensingID', 50)->nullable();
+            $table->string('LicensingID', 50)->primary();
 
             $table->unsignedBigInteger('OrganizationID');
 
@@ -26,7 +25,7 @@ return new class extends Migration {
 
             $table->date('EndDate')->nullable();
 
-            $table->string('Status', 10)->nullable();
+            $table->string('Status',10);
 
             $table->text('ParentProgram')->nullable();
 

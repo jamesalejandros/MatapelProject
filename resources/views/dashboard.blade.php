@@ -236,53 +236,7 @@
 
                 <!-- Detail -->
 
-                <a href="{{ route('software-detail.index') }}">
-
-                    <div
-                        class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 border hover:border-green-500">
-
-                        <div class="flex justify-between items-center">
-
-                            <div>
-
-                                <h3 class="text-2xl font-bold text-slate-800">
-
-                                    Software Detail Licensing
-
-                                </h3>
-
-                                <p class="text-slate-500 mt-3">
-
-                                    Mengelola informasi lisensi software, quantity, harga pembelian, serta detail lisensi.
-
-                                </p>
-
-                            </div>
-
-                            <div
-                                class="w-20 h-20 rounded-2xl bg-green-100 flex items-center justify-center group-hover:scale-110 transition">
-
-                                <i class="bi bi-list-ul text-5xl text-green-600"></i>
-
-                            </div>
-
-                        </div>
-
-                        <div class="mt-8">
-
-                            <span class="inline-flex items-center font-semibold text-green-600">
-
-                                Buka Modul
-
-                                <i class="bi bi-arrow-right ml-2"></i>
-
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </a>
+                
 
             </div>
 

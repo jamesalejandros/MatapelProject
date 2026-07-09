@@ -2,23 +2,23 @@
 
 @section('content')
 
-<div class="min-h-screen bg-slate-100">
+    <div class="min-h-screen bg-slate-100">
 
+        <div class="min-h-screen bg-slate-100">
 
-<!-- Header -->
-<div class="bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 shadow-lg">
+    {{-- ================= HEADER ================= --}}
 
-    <div class="max-w-7xl mx-auto px-6 py-10">
+    <div class="bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 shadow-xl">
 
-        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="max-w-7xl mx-auto px-6 py-10">
 
-            <div class="text-white">
+            <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
 
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-5 text-white">
 
-                    <div class="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center">
+                    <div class="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center shadow-lg">
 
-                        <i class="bi bi-pc-display text-3xl"></i>
+                        <i class="bi bi-pc-display text-4xl"></i>
 
                     </div>
 
@@ -32,7 +32,7 @@
 
                         <p class="text-blue-100 mt-1">
 
-                            Master Data Software Licensing
+                            Kelola Software Master beserta seluruh Detail Licensing.
 
                         </p>
 
@@ -40,58 +40,112 @@
 
                 </div>
 
+                <a href="{{ route('software-master.create') }}"
+                    class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-indigo-700 font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200">
+
+                    <i class="bi bi-plus-circle-fill"></i>
+
+                    Tambah Software
+
+                </a>
+
             </div>
-
-
-            <a href="{{ route('software-master.create') }}"
-
-                class="inline-flex items-center gap-2 bg-white text-blue-700 font-semibold px-6 py-3 rounded-xl shadow hover:shadow-xl hover:scale-105 transition duration-300">
-
-                <i class="bi bi-plus-circle-fill"></i>
-
-                Tambah Software
-
-            </a>
 
         </div>
 
     </div>
 
-</div>
+    <div class="max-w-7xl mx-auto px-6 py-8">
 
+        {{-- ================= DASHBOARD ================= --}}
 
-<div class="max-w-7xl mx-auto px-6 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
 
+            <div class="bg-white rounded-2xl shadow border border-slate-200 p-6">
 
-    <!-- Information Cards -->
+                <div class="flex justify-between items-center">
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div>
 
+                        <p class="text-slate-500">
 
-        <div class="bg-white rounded-2xl shadow-md p-6 border border-slate-100">
+                            Total Software
 
-            <div class="flex justify-between items-center">
+                        </p>
 
-                <div>
+                        <h2 class="text-4xl font-bold text-slate-800 mt-2">
 
-                    <p class="text-sm text-slate-500">
+                            {{ $softwareMasters->total() }}
 
-                        Total Data
+                        </h2>
 
-                    </p>
+                    </div>
 
-                    <h2 class="text-3xl font-bold text-slate-800 mt-2">
+                    <div class="w-16 h-16 rounded-2xl bg-blue-100 flex items-center justify-center">
 
-                        {{ $softwareMasters->total() }}
+                        <i class="bi bi-pc-display text-3xl text-blue-700"></i>
 
-                    </h2>
+                    </div>
 
                 </div>
 
+            </div>
 
-                <div class="w-14 h-14 rounded-xl bg-blue-100 flex items-center justify-center">
+            <div class="bg-white rounded-2xl shadow border border-slate-200 p-6">
 
-                    <i class="bi bi-database-fill text-blue-600 text-2xl"></i>
+                <div class="flex justify-between items-center">
+
+                    <div>
+
+                        <p class="text-slate-500">
+
+                            Total Detail
+
+                        </p>
+
+                        <h2 class="text-4xl font-bold text-emerald-600 mt-2">
+
+                            {{ $softwareMasters->sum(fn($item) => $item->details->count()) }}
+
+                        </h2>
+
+                    </div>
+
+                    <div class="w-16 h-16 rounded-2xl bg-emerald-100 flex items-center justify-center">
+
+                        <i class="bi bi-list-check text-3xl text-emerald-700"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="bg-white rounded-2xl shadow border border-slate-200 p-6">
+
+                <div class="flex justify-between items-center">
+
+                    <div>
+
+                        <p class="text-slate-500">
+
+                            Status Sistem
+
+                        </p>
+
+                        <h2 class="text-2xl font-bold text-green-600 mt-3">
+
+                            Online
+
+                        </h2>
+
+                    </div>
+
+                    <div class="w-16 h-16 rounded-2xl bg-green-100 flex items-center justify-center">
+
+                        <i class="bi bi-check-circle-fill text-3xl text-green-700"></i>
+
+                    </div>
 
                 </div>
 
@@ -99,684 +153,700 @@
 
         </div>
 
+        {{-- ================= SEARCH ================= --}}
 
-        <div class="bg-white rounded-2xl shadow-md p-6 border border-slate-100">
+        <div class="bg-white rounded-2xl shadow border border-slate-200 p-6 mb-8">
 
-            <div class="flex justify-between items-center">
+            <form action="{{ route('software-master.index') }}" method="GET">
 
-                <div>
+                <div class="flex flex-col lg:flex-row gap-4">
 
-                    <p class="text-sm text-slate-500">
+                    <div class="relative flex-1">
 
-                        Current Page
+                        <i class="bi bi-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
 
-                    </p>
+                        <input
+                            type="text"
+                            name="search"
+                            value="{{ $search }}"
+                            placeholder="Cari Licensing ID, Vendor, Organization atau Parent Program..."
+                            class="w-full rounded-xl border-slate-300 pl-11 py-3 focus:ring-indigo-500 focus:border-indigo-500">
 
-                    <h2 class="text-3xl font-bold text-slate-800 mt-2">
+                    </div>
 
-                        {{ $softwareMasters->count() }}
+                    <button
+                        type="submit"
+                        class="px-8 py-3 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 transition">
 
-                    </h2>
+                        <i class="bi bi-search me-2"></i>
+
+                        Search
+
+                    </button>
 
                 </div>
 
-
-                <div class="w-14 h-14 rounded-xl bg-emerald-100 flex items-center justify-center">
-
-                    <i class="bi bi-list-check text-emerald-600 text-2xl"></i>
-
-                </div>
-
-            </div>
+            </form>
 
         </div>
 
+        {{-- ================= SOFTWARE ================= --}}
 
-        <div class="bg-white rounded-2xl shadow-md p-6 border border-slate-100">
+        @forelse($softwareMasters as $software)
 
-            <div class="flex justify-between items-center">
+            <div x-data="{ open: false }"
+     x-cloak
+     class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden mb-8">
 
-                <div>
+                {{-- HEADER SOFTWARE --}}
 
-                    <p class="text-sm text-slate-500">
+                <div class="bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-600 px-6 py-6 text-white">
 
-                        System Status
+                    <div class="flex flex-col xl:flex-row justify-between xl:items-center gap-6">
 
-                    </p>
+                        <div class="flex items-center gap-4">
 
-                    <h2 class="text-2xl font-bold text-green-600 mt-3">
+                            <div class="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center">
 
-                        Active
-
-                    </h2>
-
-                </div>
-
-
-                <div class="w-14 h-14 rounded-xl bg-green-100 flex items-center justify-center">
-
-                    <i class="bi bi-check-circle-fill text-green-600 text-2xl"></i>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-    </div>
-
-
-
-    <!-- Search -->
-
-    <div class="bg-white rounded-2xl shadow-md p-6 mb-8">
-
-
-        <form method="GET"
-
-            action="{{ route('software-master.index') }}">
-
-
-            <div class="flex flex-col md:flex-row gap-4">
-
-
-                <div class="flex-1 relative">
-
-
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
-
-                        <i class="bi bi-search"></i>
-
-                    </span>
-
-
-                    <input
-
-                        type="text"
-
-                        name="search"
-
-                        value="{{ $search }}"
-
-                        placeholder="Cari Licensing ID, Vendor, Status atau Parent Program..."
-
-                        class="w-full rounded-xl border-slate-300 pl-12 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-
-
-                </div>
-
-
-                <button
-
-                    type="submit"
-
-                    class="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-slate-800 text-white font-semibold hover:bg-slate-900 transition">
-
-
-                    <i class="bi bi-search"></i>
-
-                    Search
-
-
-                </button>
-
-
-            </div>
-
-
-        </form>
-
-
-    </div>
-
-
-    <!-- Table Card mulai di Part 2 -->
-
-
-    <!-- Table Card -->
-
-    <div class="bg-white rounded-2xl shadow-md overflow-hidden border border-slate-100">
-
-
-        <!-- Table Header -->
-
-        <div class="px-6 py-5 border-b border-slate-200 flex items-center justify-between">
-
-
-            <div>
-
-                <h2 class="text-xl font-bold text-slate-800">
-
-                    Software Licensing Data
-
-                </h2>
-
-                <p class="text-sm text-slate-500 mt-1">
-
-                    Daftar seluruh software licensing perusahaan
-
-                </p>
-
-            </div>
-
-
-            <div class="hidden md:flex items-center gap-2 text-sm text-slate-500">
-
-                <i class="bi bi-shield-check text-green-600"></i>
-
-                Data Terlindungi
-
-            </div>
-
-
-        </div>
-
-
-
-        <!-- Responsive Table -->
-
-        <div class="overflow-x-auto">
-
-
-            <table class="w-full text-sm text-left">
-
-
-                <thead class="bg-slate-800 text-white">
-
-
-                    <tr>
-
-
-                        <th class="px-6 py-4 font-semibold text-center">
-
-                            No
-
-                        </th>
-
-
-                        <th class="px-6 py-4 font-semibold">
-
-                            Licensing ID
-
-                        </th>
-
-
-                        <th class="px-6 py-4 font-semibold">
-
-                            Organization
-
-                        </th>
-
-
-                        <th class="px-6 py-4 font-semibold">
-
-                            Vendor
-
-                        </th>
-
-
-                        <th class="px-6 py-4 font-semibold">
-
-                            Parent Program
-
-                        </th>
-
-
-                        <th class="px-6 py-4 font-semibold">
-
-                            Expired
-
-                        </th>
-
-
-                        <th class="px-6 py-4 font-semibold">
-
-                            Status
-
-                        </th>
-
-
-                        <th class="px-6 py-4 font-semibold text-center">
-
-                            Action
-
-                        </th>
-
-
-                    </tr>
-
-
-                </thead>
-
-
-
-                <tbody class="divide-y divide-slate-100">
-
-
-                @forelse($softwareMasters as $software)
-
-
-                    <tr class="hover:bg-slate-50 transition">
-
-
-                        <td class="px-6 py-4 text-center text-slate-600">
-
-
-                            {{ $loop->iteration + ($softwareMasters->currentPage()-1) * $softwareMasters->perPage() }}
-
-
-                        </td>
-
-
-
-                        <td class="px-6 py-4">
-
-
-                            <div class="font-semibold text-slate-800">
-
-
-                                {{ $software->LicensingID ?? '-' }}
-
+                                <i class="bi bi-pc-display text-3xl"></i>
 
                             </div>
 
+                            <div>
 
-                        </td>
+                                <h2 class="text-2xl font-bold">
 
+                                    {{ $software->LicensingID }}
 
+                                </h2>
 
-                        <td class="px-6 py-4 text-slate-600">
+                                <p class="text-cyan-100">
 
-
-                            {{ $software->organization?->Name ?? '-' }}
-
-
-                        </td>
-
-
-
-                        <td class="px-6 py-4 text-slate-600">
-
-
-                            {{ $software->Vendor ?? '-' }}
-
-
-                        </td>
-
-
-
-                        <td class="px-6 py-4 text-slate-600">
-
-
-                            {{ $software->ParentProgram ?? '-' }}
-
-
-                        </td>
-
-
-
-                        <td class="px-6 py-4 text-slate-600">
-
-
-                            {{ $software->EndDate ? $software->EndDate->format('d M Y') : '-' }}
-
-
-                        </td>
-
-
-
-                        <td class="px-6 py-4">
-
-
-                            @if($software->Status == "Active")
-
-
-                                <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
-
-
-                                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
-
-                                    Active
-
-
-                                </span>
-
-
-
-                            @elseif($software->Status == "Expired")
-
-
-                                <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
-
-
-                                    <span class="w-2 h-2 rounded-full bg-red-500"></span>
-
-                                    Expired
-
-
-                                </span>
-
-
-
-                            @else
-
-
-                                <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
-
-
-                                    <span class="w-2 h-2 rounded-full bg-gray-500"></span>
-
-                                    Inactive
-
-
-                                </span>
-
-
-                            @endif
-
-
-                        </td>
-
-
-
-                        <td class="px-6 py-4">
-
-
-                            <div class="flex items-center justify-center gap-2">
-
-
-
-                                <!-- View -->
-
-                                <a href="{{ route('software-master.show',$software) }}"
-
-                                    class="w-9 h-9 rounded-lg bg-cyan-100 text-cyan-700 flex items-center justify-center hover:bg-cyan-200 transition"
-
-                                    title="Detail">
-
-
-                                    <i class="bi bi-eye-fill"></i>
-
-
-                                </a>
-
-
-
-                                <!-- Edit -->
-
-                                <a href="{{ route('software-master.edit',$software) }}"
-
-                                    class="w-9 h-9 rounded-lg bg-yellow-100 text-yellow-700 flex items-center justify-center hover:bg-yellow-200 transition"
-
-                                    title="Edit">
-
-
-                                    <i class="bi bi-pencil-fill"></i>
-
-
-                                </a>
-
-
-
-                                <!-- Delete -->
-
-
-                                <form
-
-                                    action="{{ route('software-master.destroy',$software) }}"
-
-                                    method="POST"
-
-                                    class="delete-form">
-
-
-                                    @csrf
-
-                                    @method('DELETE')
-
-
-
-                                    <button
-
-                                        type="submit"
-
-                                        class="w-9 h-9 rounded-lg bg-red-100 text-red-700 flex items-center justify-center hover:bg-red-200 transition"
-
-                                        title="Delete">
-
-
-                                        <i class="bi bi-trash-fill"></i>
-
-
-                                    </button>
-
-
-                                </form>
-
-
-                            </div>
-
-
-                        </td>
-
-
-
-                    </tr>
-
-
-                @empty
-
-
-                    <tr>
-
-
-                        <td colspan="8" class="px-6 py-12 text-center">
-
-
-                            <div class="flex flex-col items-center">
-
-
-                                <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
-
-
-                                    <i class="bi bi-inbox text-3xl text-slate-400"></i>
-
-
-                                </div>
-
-
-                                <h3 class="font-semibold text-slate-700">
-
-
-                                    Belum ada data software
-
-
-                                </h3>
-
-
-                                <p class="text-sm text-slate-500 mt-1">
-
-
-                                    Silakan tambahkan data software licensing baru.
-
+                                    {{ $software->Vendor ?: '-' }}
 
                                 </p>
 
-
                             </div>
 
+                        </div>
 
-                        </td>
+                        <div class="flex flex-wrap gap-3">
 
+    <button
+    @click="open = !open"
+    class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-700 hover:bg-slate-800 text-white font-semibold shadow-lg transition">
 
-                    </tr>
+    <span x-text="open ? 'Sembunyikan Detail' : 'Lihat Detail'"></span>
 
+    <i class="bi"
+       :class="open ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+</button>
+                        {{-- TAMBAH DETAIL --}}
+        
+    <a href="{{ route('software-detail.create', ['softwareMaster' => $software]) }}"
+       class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200">
 
-                @endforelse
+        <i class="bi bi-plus-circle-fill text-white text-lg"></i>
 
+        <span>Tambah Detail</span>
 
+    </a>
 
-                </tbody>
+    {{-- EDIT SOFTWARE --}}
+    <a href="{{ route('software-master.edit', $software) }}"
+       class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-yellow-400 hover:bg-yellow-500 text-slate-900 font-semibold shadow-lg hover:shadow-xl transition-all duration-200">
 
+        <i class="bi bi-pencil-fill text-slate-900 text-lg"></i>
 
-            </table>
+        <span>Edit</span>
 
+    </a>
+
+    {{-- DELETE SOFTWARE --}}
+    <form
+        action="{{ route('software-master.destroy', $software) }}"
+        method="POST"
+        class="delete-form">
+
+        @csrf
+        @method('DELETE')
+
+        <button
+            type="submit"
+            class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200">
+
+            <i class="bi bi-trash-fill text-white text-lg"></i>
+
+            <span>Delete</span>
+
+        </button>
+
+    </form>
+
+</div>
+
+                    </div>
+
+                </div>
+
+                {{-- ================= INFORMASI SOFTWARE MASTER ================= --}}
+
+<div class="p-6">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+
+        {{-- Organization --}}
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+
+            <p class="text-sm text-slate-500">
+
+                Organization
+
+            </p>
+
+            <h4 class="font-bold text-slate-800 mt-2">
+
+                {{ $software->organization?->Name ?? '-' }}
+
+            </h4>
 
         </div>
 
+        {{-- Parent Program --}}
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
 
-        <!-- Pagination dan Script lanjut di Part 3 -->
+            <p class="text-sm text-slate-500">
 
+                Parent Program
 
-        <!-- Pagination -->
+            </p>
 
-        @if($softwareMasters->hasPages())
+            <h4 class="font-bold text-slate-800 mt-2">
 
-            <div class="px-6 py-5 border-t border-slate-200">
+                {{ $software->ParentProgram ?: '-' }}
 
-                {{ $softwareMasters->links() }}
+            </h4>
+
+        </div>
+
+        {{-- End Date --}}
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+
+            <p class="text-sm text-slate-500">
+
+                Expired Date
+
+            </p>
+
+            <h4 class="font-bold text-slate-800 mt-2">
+
+                {{ $software->EndDate ? $software->EndDate->format('d M Y') : '-' }}
+
+            </h4>
+
+        </div>
+
+        {{-- Status --}}
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+
+            <p class="text-sm text-slate-500">
+
+                Status
+
+            </p>
+
+            <div class="mt-3">
+
+                @switch($software->Status)
+
+                    @case('Active')
+
+                        <span class="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-700 font-semibold">
+
+                            <i class="bi bi-check-circle-fill me-2"></i>
+
+                            Active
+
+                        </span>
+
+                        @break
+
+                    @case('Expired')
+
+                        <span class="inline-flex items-center px-4 py-2 rounded-full bg-red-100 text-red-700 font-semibold">
+
+                            <i class="bi bi-x-circle-fill me-2"></i>
+
+                            Expired
+
+                        </span>
+
+                        @break
+
+                    @default
+
+                        <span class="inline-flex items-center px-4 py-2 rounded-full bg-slate-200 text-slate-700 font-semibold">
+
+                            <i class="bi bi-dash-circle-fill me-2"></i>
+
+                            Inactive
+
+                        </span>
+
+                @endswitch
 
             </div>
 
-        @endif
-
+        </div>
 
     </div>
 
+</div>
+<div
+    x-show="open"
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0 -translate-y-2"
+    x-transition:enter-end="opacity-100 translate-y-0"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100 translate-y-0"
+    x-transition:leave-end="opacity-0 -translate-y-2"
+>
+
+{{-- ================= DETAIL HEADER ================= --}}
+
+<div class="bg-slate-900 text-white px-6 py-5 flex flex-col md:flex-row justify-between md:items-center gap-4">
+
+    <div>
+
+        <h3 class="text-xl font-bold">
+
+            Detail Licensing
+
+        </h3>
+
+        <p class="text-slate-300 text-sm mt-1">
+
+            Daftar seluruh detail licensing yang dimiliki software ini.
+
+        </p>
+
+    </div>
+
+    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500 font-semibold">
+
+        <i class="bi bi-list-check"></i>
+
+        {{ $software->details->count() }} Detail
+
+    </span>
 
 </div>
 
+{{-- ================= TABLE ================= --}}
+
+<div class="overflow-x-auto">
+
+    <table class="min-w-full text-sm">
+
+        <thead class="bg-slate-800 text-white">
+
+            <tr>
+
+                <th class="px-5 py-4 text-center w-16">
+
+                    No
+
+                </th>
+
+                <th class="px-5 py-4">
+
+                    License Pool
+
+                </th>
+
+                <th class="px-5 py-4">
+
+                    Product Family
+
+                </th>
+
+                <th class="px-5 py-4">
+
+                    Version
+
+                </th>
+
+                <th class="px-5 py-4 text-center">
+
+                    Qty
+
+                </th>
+
+                <th class="px-5 py-4 text-end">
+
+                    Last Price
+
+                </th>
+
+                <th class="px-5 py-4">
+
+                    Last Buy Date
+
+                </th>
+
+                <th class="px-5 py-4">
+
+                    Keterangan
+
+                </th>
+
+                <th class="px-5 py-4 text-center w-40">
+
+                    Action
+
+                </th>
+
+            </tr>
+
+        </thead>
+
+        <tbody class="divide-y divide-slate-200 bg-white">
+
+            @forelse($software->details as $detail)
+
+                <tr class="hover:bg-slate-50 transition">
+
+                    <td class="px-5 py-4 text-center font-semibold">
+
+                        {{ $loop->iteration }}
+
+                    </td>
+
+                    <td class="px-5 py-4">
+
+                        {{ $detail->LicensePool ?: '-' }}
+
+                    </td>
+
+                    <td class="px-5 py-4">
+
+                        {{ $detail->ProductFamily ?: '-' }}
+
+                    </td>
+
+                    <td class="px-5 py-4">
+
+                        {{ $detail->Version ?: '-' }}
+
+                    </td>
+
+                    <td class="px-5 py-4 text-center font-semibold">
+
+                        {{ $detail->Quantity ?: '-' }}
+
+                    </td>
+
+                    <td class="px-5 py-4 text-end font-medium">
+
+                        {{ $detail->LastPrice ? 'Rp ' . number_format($detail->LastPrice, 0, ',', '.') : '-' }}
+
+                    </td>
+
+                    <td class="px-5 py-4">
+
+                        {{ $detail->LastBuyDate ? $detail->LastBuyDate->format('d M Y') : '-' }}
+
+                    </td>
+
+                    <td class="px-5 py-4">
+
+                        {{ $detail->Keterangan ?: '-' }}
+
+                    </td>
+
+                    <td class="px-5 py-4">
+
+                        <div class="flex justify-center gap-2">
+
+                            {{-- View --}}
+                            <a href="{{ route('software-detail.show', $detail) }}"
+                               class="w-10 h-10 rounded-xl bg-cyan-100 hover:bg-cyan-200 text-cyan-700 flex items-center justify-center transition"
+                               title="View">
+
+                                <i class="bi bi-eye-fill"></i>
+
+                            </a>
+
+                            {{-- Edit --}}
+                            <a href="{{ route('software-detail.edit', $detail) }}"
+                               class="w-10 h-10 rounded-xl bg-yellow-100 hover:bg-yellow-200 text-yellow-700 flex items-center justify-center transition"
+                               title="Edit">
+
+                                <i class="bi bi-pencil-fill"></i>
+
+                            </a>
+
+                            {{-- Delete --}}
+                            <form action="{{ route('software-detail.destroy', $detail) }}"
+                                  method="POST"
+                                  class="delete-detail">
+
+                                @csrf
+                                @method('DELETE')
+
+                                <button
+                                    type="submit"
+                                    class="w-10 h-10 rounded-xl bg-red-100 hover:bg-red-200 text-red-700 flex items-center justify-center transition"
+                                    title="Delete">
+
+                                    <i class="bi bi-trash-fill"></i>
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                                               @empty
+
+                    <tr>
+
+                        <td colspan="9" class="px-6 py-12 text-center">
+
+                            <div class="flex flex-col items-center">
+
+                                <div class="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center mb-5">
+
+                                    <i class="bi bi-folder2-open text-5xl text-slate-400"></i>
+
+                                </div>
+
+                                <h4 class="text-xl font-bold text-slate-700">
+
+                                    Belum Ada Detail Licensing
+
+                                </h4>
+
+                                <p class="text-slate-500 mt-2">
+
+                                    Software ini belum memiliki data detail licensing.
+
+                                </p>
+
+                                <a href="{{ route('software-detail.create', ['softwareMaster' => $software]) }}"
+                                   class="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-semibold transition">
+
+                                    <i class="bi bi-plus-circle-fill"></i>
+
+                                    Tambah Detail Pertama
+
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                @endforelse
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </div>
 
-{{-- SweetAlert Notification --}}
+</div>
+
+@empty
+
+<div class="bg-white rounded-3xl shadow-xl p-16 text-center">
+
+    <div class="flex flex-col items-center">
+
+        <div class="w-24 h-24 rounded-full bg-slate-100 flex items-center justify-center mb-6">
+
+            <i class="bi bi-pc-display-horizontal text-6xl text-slate-400"></i>
+
+        </div>
+
+        <h2 class="text-3xl font-bold text-slate-700">
+
+            Belum Ada Software
+
+        </h2>
+
+        <p class="text-slate-500 mt-3 max-w-xl">
+
+            Data Software Master masih kosong.
+            Silakan tambahkan Software terlebih dahulu sebelum menambahkan Detail Licensing.
+
+        </p>
+
+        <a href="{{ route('software-master.create') }}"
+           class="mt-8 inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold shadow-lg transition">
+
+            <i class="bi bi-plus-circle-fill"></i>
+
+            Tambah Software
+
+        </a>
+
+    </div>
+
+</div>
+
+@endforelse
+
+{{-- ================= PAGINATION ================= --}}
+
+@if($softwareMasters->hasPages())
+
+<div class="mt-10">
+
+    {{ $softwareMasters->links() }}
+
+</div>
+
+@endif
+
+</div>
+
+</div>
+
+{{-- ================= SWEET ALERT ================= --}}
 
 @if(session('success'))
 
 <script>
 
-document.addEventListener('DOMContentLoaded', function(){
+Swal.fire({
 
+    icon: 'success',
 
-    Swal.fire({
+    title: 'Berhasil',
 
-        icon: 'success',
+    text: @json(session('success')),
 
-        title: 'Berhasil',
+    timer: 1000,
 
-        text: @json(session('success')),
-
-        timer: 2000,
-
-        showConfirmButton: false,
-
-        timerProgressBar: true
-
-    });
-
+    showConfirmButton: false
 
 });
-
 
 </script>
 
 @endif
 
-@if(session('error'))
+@if($errors->any())
 
 <script>
 
-document.addEventListener('DOMContentLoaded', function(){
+Swal.fire({
 
+    icon: 'error',
 
-    Swal.fire({
+    title: 'Terjadi Kesalahan',
 
-        icon: 'error',
-
-        title: 'Gagal',
-
-        text: @json(session('error')),
-
-        confirmButtonColor: '#dc2626'
-
-    });
-
+    html: `{!! implode('<br>', $errors->all()) !!}`
 
 });
-
 
 </script>
 
 @endif
 
-{{-- Delete Confirmation --}}
+{{-- ================= DELETE SOFTWARE ================= --}}
 
 <script>
-
 
 document.querySelectorAll('.delete-form').forEach(form => {
 
-
     form.addEventListener('submit', function(e){
-
 
         e.preventDefault();
 
-
-
         Swal.fire({
 
+            title: 'Hapus Software?',
 
-            title: 'Hapus Data?',
-
-
-            text: 'Data software licensing yang dihapus tidak dapat dikembalikan.',
-
+            text: 'Seluruh detail licensing yang berkaitan juga akan ikut terhapus.',
 
             icon: 'warning',
 
-
             showCancelButton: true,
-
-
-            confirmButtonText: 'Ya, Hapus',
-
-
-            cancelButtonText: 'Batal',
-
 
             confirmButtonColor: '#dc2626',
 
-
             cancelButtonColor: '#64748b',
 
+            confirmButtonText: 'Ya, Hapus',
 
-            reverseButtons: true
+            cancelButtonText: 'Batal'
 
-
-        }).then((result) => {
-
+        }).then((result)=>{
 
             if(result.isConfirmed){
 
-
                 form.submit();
-
 
             }
 
-
         });
-
-
 
     });
 
-
-
 });
 
+</script>
+
+{{-- ================= DELETE DETAIL ================= --}}
+
+<script>
+
+document.querySelectorAll('.delete-detail').forEach(form => {
+
+    form.addEventListener('submit', function(e){
+
+        e.preventDefault();
+
+        Swal.fire({
+
+            title: 'Hapus Detail Licensing?',
+
+            text: 'Data yang dihapus tidak dapat dikembalikan.',
+
+            icon: 'warning',
+
+            showCancelButton: true,
+
+            confirmButtonColor: '#dc2626',
+
+            cancelButtonColor: '#64748b',
+
+            confirmButtonText: 'Ya, Hapus',
+
+            cancelButtonText: 'Batal'
+
+        }).then((result)=>{
+
+            if(result.isConfirmed){
+
+                form.submit();
+
+            }
+
+        });
+
+    });
+
+});
 
 </script>
 

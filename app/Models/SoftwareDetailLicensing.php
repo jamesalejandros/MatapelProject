@@ -8,30 +8,40 @@ class SoftwareDetailLicensing extends Model
 {
     protected $fillable = [
 
-        'SoftID',
         'LicensingID',
+
         'LicensePool',
+
         'ProductFamily',
+
         'Version',
+
         'Quantity',
+
         'Keterangan',
+
         'LastPrice',
+
         'LastBuyDate'
 
     ];
 
     protected $casts = [
 
-        'LastBuyDate'=>'date'
+        'LastBuyDate' => 'date'
 
     ];
 
     public function software()
     {
         return $this->belongsTo(
+
             SoftwareMaster::class,
-            'SoftID',
-            'SoftID'
+
+            'LicensingID',
+
+            'LicensingID'
+
         );
     }
 }

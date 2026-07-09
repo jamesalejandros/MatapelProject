@@ -39,7 +39,7 @@
 
                 </div>
 
-                <a href="{{ route('software-detail.index') }}"
+                <a href="{{ route('software-master.index') }}"
                     class="inline-flex items-center gap-2 bg-white text-purple-700 font-semibold px-6 py-3 rounded-xl shadow hover:shadow-xl hover:scale-105 transition">
 
                     <i class="bi bi-arrow-left"></i>
@@ -127,7 +127,7 @@
             </div>
 
             <form
-                action="{{ route('software-detail.store') }}"
+                action="{{ route('software-detail.store', ['softwareMaster' => $selectedLicensingID]) }}"
                 method="POST"
                 class="p-8">
 
@@ -139,81 +139,48 @@
 
                     <!-- Software -->
 
-                    <div>
 
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">
-
-                            Software
-                            <span class="text-red-500">*</span>
-
-                        </label>
-
-                        <select
-                            name="SoftID"
-                            class="w-full rounded-xl border-slate-300 focus:border-purple-500 focus:ring-purple-500 @error('SoftID') border-red-500 @enderror">
-
-                            <option value="">
-
-                                -- Pilih Software --
-
-                            </option>
-
-                            @foreach($softwares as $software)
-
-                                <option
-                                    value="{{ $software->SoftID }}"
-                                    {{ old('SoftID') == $software->SoftID ? 'selected' : '' }}>
-
-                                    {{ $software->LicensingID }} - {{ $software->Vendor }}
-
-                                </option>
-
-                            @endforeach
-
-                        </select>
-
-                        @error('SoftID')
-
-                            <p class="text-sm text-red-600 mt-2">
-
-                                {{ $message }}
-
-                            </p>
-
-                        @enderror
-
-                    </div>
 
                     <!-- Licensing ID -->
 
-                    <div>
+<div>
 
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">
+    <label class="block text-sm font-semibold text-slate-700 mb-2">
 
-                            Licensing ID
+        Licensing ID
 
-                        </label>
+    </label>
 
-                        <input
-                            type="text"
-                            name="LicensingID"
-                            value="{{ old('LicensingID') }}"
-                            placeholder="Contoh : LIC-DETAIL-001"
-                            class="w-full rounded-xl border-slate-300 focus:border-purple-500 focus:ring-purple-500 @error('LicensingID') border-red-500 @enderror">
+    <input
+        type="text"
+        value="{{ $selectedLicensingID }}"
+        readonly
+        class="w-full rounded-xl bg-slate-100 border-slate-300 text-slate-600 cursor-not-allowed">
 
-                        @error('LicensingID')
+    <input
+        type="hidden"
+        name="LicensingID"
+        value="{{ $selectedLicensingID }}">
 
-                            <p class="text-sm text-red-600 mt-2">
+    <p class="text-sm text-slate-500 mt-2">
 
-                                {{ $message }}
+        Licensing ID dipilih otomatis berdasarkan Software Master yang sedang dibuka.
 
-                            </p>
+    </p>
 
-                        @enderror
+    @error('LicensingID')
 
-                    </div>
+        <p class="text-sm text-red-600 mt-2">
 
-                </div>
+            {{ $message }}
+
+        </p>
+
+    @enderror
+
+</div>
+
+</div>
 
                 <!-- Form Row 2 -->
 
