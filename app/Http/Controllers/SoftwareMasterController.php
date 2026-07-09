@@ -15,7 +15,12 @@ class SoftwareMasterController extends Controller
     public function index(Request $request)
     {
         $search = trim($request->input('search'));
-        
+
+        $range = (int) $request->input('range', 30);
+
+        if ($range < 1) {
+            $range = 30;
+        }
 
         $softwareMasters = SoftwareMaster::with([
             'organization',
@@ -38,14 +43,28 @@ class SoftwareMasterController extends Controller
                 });
 
             })
+
             ->latest()
             ->paginate(10)
             ->withQueryString();
+
+        $expiredSoonQuery = SoftwareMaster::with('organization')
+            ->whereNotNull('EndDate')
+            ->whereDate('EndDate', '>=', now()->toDateString())
+            ->whereDate('EndDate', '<=', now()->copy()->addDays($range)->toDateString())
+            ->orderBy('EndDate');
+
+        $expiredSoonCount = (clone $expiredSoonQuery)->count();
+
+        $expiredSoonList = (clone $expiredSoonQuery)->get();
 
         return view('software_master.index', [
 
             'softwareMasters' => $softwareMasters,
             'search' => $search,
+            'range' => $range,
+            'expiredSoonCount' => $expiredSoonCount,
+            'expiredSoonList' => $expiredSoonList,
 
         ]);
     }

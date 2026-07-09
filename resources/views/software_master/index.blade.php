@@ -2,7 +2,9 @@
 
 @section('content')
 
-    <div class="min-h-screen bg-slate-100">
+    <div
+    x-data="{ expiredModal:false }"
+    class="min-h-screen bg-slate-100">
 
         <div class="min-h-screen bg-slate-100">
 
@@ -134,35 +136,62 @@
 
             </div>
 
-            <div class="bg-white rounded-2xl shadow border border-slate-200 p-6">
+            <div
+    @click="expiredModal = true"
+    class="cursor-pointer bg-white rounded-2xl shadow border border-red-200 p-6 hover:shadow-lg hover:scale-[1.02] transition">
 
-                <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center">
 
-                    <div>
+        <div>
 
-                        <p class="text-slate-500">
+            <p class="text-slate-500">
+                Software Mendekati Expired
+            </p>
 
-                            Status Sistem
+            <h2 class="text-4xl font-bold text-red-600 mt-2">
+                {{ $expiredSoonCount }}
+            </h2>
 
-                        </p>
+            <p class="text-sm text-slate-500 mt-2">
+                Dalam {{ $range }} hari ke depan
+            </p>
 
-                        <h2 class="text-2xl font-bold text-green-600 mt-3">
+            <form
+                action="{{ route('software-master.index') }}"
+                method="GET"
+                class="mt-3 flex items-center gap-2"
+                @click.stop>
 
-                            Online
+                <input
+                    type="hidden"
+                    name="search"
+                    value="{{ $search }}">
 
-                        </h2>
+                <input
+                    type="number"
+                    min="1"
+                    name="range"
+                    value="{{ $range }}"
+                    onchange="this.form.submit()"
+                    class="w-16 rounded-lg border-slate-300 text-center text-sm py-1">
 
-                    </div>
+                <span class="text-sm text-slate-500">
+                    hari
+                </span>
 
-                    <div class="w-16 h-16 rounded-2xl bg-green-100 flex items-center justify-center">
+            </form>
 
-                        <i class="bi bi-check-circle-fill text-3xl text-green-700"></i>
+        </div>
 
-                    </div>
+        <div class="w-16 h-16 rounded-2xl bg-red-100 flex items-center justify-center">
 
-                </div>
+            <i class="bi bi-exclamation-triangle-fill text-3xl text-red-600"></i>
 
-            </div>
+        </div>
+
+    </div>
+
+</div>
 
         </div>
 
@@ -863,4 +892,154 @@ document.querySelectorAll('.delete-detail').forEach(form => {
 
 </script>
 
+<div
+    x-show="expiredModal"
+    x-transition
+    x-cloak
+    class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-6">
+
+    <div
+        @click.away="expiredModal=false"
+        class="bg-white rounded-2xl shadow-2xl w-full max-w-6xl max-h-[85vh] overflow-hidden">
+
+        <div class="bg-red-600 text-white px-6 py-4 flex justify-between items-center">
+
+            <div>
+
+                <h2 class="text-2xl font-bold">
+                    Software Mendekati Expired
+                </h2>
+
+                <p class="text-red-100">
+                    Dalam {{ $range }} hari ke depan
+                </p>
+
+            </div>
+
+            <button
+                @click="expiredModal=false"
+                class="text-3xl leading-none hover:scale-110 transition">
+
+                &times;
+
+            </button>
+
+        </div>
+
+        <div class="overflow-auto max-h-[70vh]">
+
+            <table class="min-w-full">
+
+                <thead class="bg-slate-100">
+
+                    <tr>
+
+                        <th class="px-4 py-3 text-left">Licensing ID</th>
+
+                        <th class="px-4 py-3 text-left">Organization</th>
+
+                        <th class="px-4 py-3 text-left">Vendor</th>
+
+                        <th class="px-4 py-3 text-left">Expired Date</th>
+
+                        <th class="px-4 py-3 text-center">Sisa Hari</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @forelse($expiredSoonList as $software)
+
+                        <tr
+    onclick="window.location='{{ route('software-master.edit', $software) }}'"
+    class="border-b hover:bg-red-50 hover:cursor-pointer transition">
+
+                            <td class="px-4 py-3 font-semibold text-indigo-600 group-hover:underline">
+
+    {{ $software->LicensingID }}
+
+</td>
+
+                            <td class="px-4 py-3">
+
+                                {{ $software->organization?->Name ?? '-' }}
+
+                            </td>
+
+                            <td class="px-4 py-3">
+
+                                {{ $software->Vendor ?: '-' }}
+
+                            </td>
+
+                            <td class="px-4 py-3">
+
+                                {{ $software->EndDate?->format('d M Y') }}
+
+                            </td>
+
+                            <td class="px-4 py-3 text-center">
+
+                                @php
+                                    $days = round(now()->diffInDays($software->EndDate));
+                                @endphp
+
+                                @if($days <= 7)
+
+                                    <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 font-semibold">
+
+                                        {{ $days }} Hari
+
+                                    </span>
+
+                                @elseif($days <= 14)
+
+                                    <span class="px-3 py-1 rounded-full bg-orange-100 text-orange-700 font-semibold">
+
+                                        {{ $days }} Hari
+
+                                    </span>
+
+                                @else
+
+                                    <span class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 font-semibold">
+
+                                        {{ $days }} Hari
+
+                                    </span>
+
+                                @endif
+
+                            </td>
+
+                        </tr>
+
+                    @empty
+
+                        <tr>
+
+                            <td
+                                colspan="5"
+                                class="text-center py-10 text-slate-500">
+
+                                Tidak ada software yang akan expired
+                                dalam {{ $range }} hari.
+
+                            </td>
+
+                        </tr>
+
+                    @endforelse
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
 @endsection
