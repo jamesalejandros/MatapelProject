@@ -11,40 +11,85 @@ class SoftwareDetailLicensingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    // public function index(Request $request)
-    // {
-    //     $search = trim($request->input('search'));
+    public function index(Request $request)
+{
+    $search = trim($request->search);
 
-    //     $details = SoftwareDetailLicensing::with('software')
-    //         ->when($search, function ($query) use ($search) {
+    $productFamily = $request->ProductFamily;
 
-    //             $query->where(function ($q) use ($search) {
+    $version = $request->Version;
 
-    //                 $q->where('LicensingID', 'LIKE', "%{$search}%")
-    //                     ->orWhere('LicensePool', 'LIKE', "%{$search}%")
-    //                     ->orWhere('ProductFamily', 'LIKE', "%{$search}%")
-    //                     ->orWhere('Version', 'LIKE', "%{$search}%")
-    //                     ->orWhere('Quantity', 'LIKE', "%{$search}%")
-    //                     ->orWhereHas('software', function ($software) use ($search) {
+    $licensePool = $request->LicensePool;
 
-    //                         $software->where('LicensingID', 'LIKE', "%{$search}%")
-    //                                  ->orWhere('Vendor', 'LIKE', "%{$search}%")
-    //                                  ->orWhere('ParentProgram', 'LIKE', "%{$search}%");
+    $query = SoftwareDetailLicensing::with('software');
 
-    //                     });
+    if ($search) {
 
-    //             });
+        $query->where(function ($q) use ($search) {
 
-    //         })
-    //         ->latest()
-    //         ->paginate(10)
-    //         ->withQueryString();
+            $q->where('LicensingID', 'LIKE', "%{$search}%")
+              ->orWhere('ProductFamily', 'LIKE', "%{$search}%")
+              ->orWhere('Version', 'LIKE', "%{$search}%")
+              ->orWhere('LicensePool', 'LIKE', "%{$search}%")
+              ->orWhere('Keterangan', 'LIKE', "%{$search}%");
 
-    //     return view('software_detail.index', [
-    //         'details' => $details,
-    //         'search'  => $search,
-    //     ]);
-    // }
+        });
+
+    }
+
+    if ($productFamily) {
+
+        $query->where('ProductFamily', $productFamily);
+
+    }
+
+    if ($version) {
+
+        $query->where('Version', $version);
+
+    }
+
+    if ($licensePool) {
+
+        $query->where('LicensePool', $licensePool);
+
+    }
+
+    $total = $query->count();
+
+    $details = $query
+        ->latest()
+        ->paginate(25)
+        ->withQueryString();
+
+    return view('software_detail.index', [
+
+        'details' => $details,
+
+        'search' => $search,
+
+        'total' => $total,
+
+        'productFamilies' => SoftwareDetailLicensing::select('ProductFamily')
+            ->whereNotNull('ProductFamily')
+            ->distinct()
+            ->orderBy('ProductFamily')
+            ->pluck('ProductFamily'),
+
+        'versions' => SoftwareDetailLicensing::select('Version')
+            ->whereNotNull('Version')
+            ->distinct()
+            ->orderBy('Version')
+            ->pluck('Version'),
+
+        'licensePools' => SoftwareDetailLicensing::select('LicensePool')
+            ->whereNotNull('LicensePool')
+            ->distinct()
+            ->orderBy('LicensePool')
+            ->pluck('LicensePool'),
+
+    ]);
+}
 
     /**
      * Show the form for creating a new resource.

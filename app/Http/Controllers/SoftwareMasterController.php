@@ -15,11 +15,12 @@ class SoftwareMasterController extends Controller
     public function index(Request $request)
     {
         $search = trim($request->input('search'));
+        
 
         $softwareMasters = SoftwareMaster::with([
-                'organization',
-                'details'
-            ])
+            'organization',
+            'details'
+        ])
             ->when($search, function ($query) use ($search) {
 
                 $query->where(function ($q) use ($search) {
@@ -276,23 +277,13 @@ class SoftwareMasterController extends Controller
      */
     public function destroy(SoftwareMaster $softwareMaster)
     {
-        if ($softwareMaster->details()->exists()) {
-
-            return redirect()
-                ->route('software-master.index')
-                ->with(
-                    'error',
-                    'Data tidak dapat dihapus karena masih memiliki detail lisensi.'
-                );
-        }
-
         $softwareMaster->delete();
 
         return redirect()
             ->route('software-master.index')
             ->with(
                 'success',
-                'Data software licensing berhasil dihapus.'
+                'Software Master beserta seluruh detail licensing berhasil dihapus.'
             );
     }
 }

@@ -68,6 +68,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('software-master', SoftwareMasterController::class);
 
+    Route::get(
+    '/software-detail',
+    [SoftwareDetailLicensingController::class, 'index']
+    )->name('software-detail.index');
+
     /*
     |--------------------------------------------------------------------------
     | Software Detail
@@ -97,10 +102,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     |--------------------------------------------------------------------------
     */
 
-    // Route::get(
-    //     '/software-detail',
-    //     [SoftwareDetailLicensingController::class, 'index']
-    // )->name('software-detail.index');
+    Route::get(
+        '/software-detail',
+        [SoftwareDetailLicensingController::class, 'index']
+    )->name('software-detail.index');
 
     Route::get(
         '/software-detail/{softwareDetail}',

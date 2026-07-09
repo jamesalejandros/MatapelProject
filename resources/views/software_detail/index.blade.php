@@ -1,53 +1,49 @@
-
 @extends('layouts.app')
 
 @section('content')
 
 <div class="min-h-screen bg-slate-100">
 
-    <!-- Header -->
-    <div class="bg-gradient-to-r from-purple-700 via-fuchsia-700 to-pink-600 shadow-lg">
+    {{-- ================= HEADER ================= --}}
+
+    <div class="bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 shadow-xl">
 
         <div class="max-w-7xl mx-auto px-6 py-10">
 
-            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex flex-col xl:flex-row justify-between items-center gap-6">
 
-                <div class="text-white">
+                <div class="flex items-center gap-5 text-white">
 
-                    <div class="flex items-center gap-3">
+                    <div class="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center shadow-lg">
 
-                        <div class="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center">
+                        <i class="bi bi-list-check text-4xl"></i>
 
-                            <i class="bi bi-key-fill text-3xl"></i>
+                    </div>
 
-                        </div>
+                    <div>
 
-                        <div>
+                        <h1 class="text-3xl font-bold">
 
-                            <h1 class="text-3xl font-bold">
+                            Software Detail Licensing
 
-                                Software Detail Licensing
+                        </h1>
 
-                            </h1>
+                        <p class="text-cyan-100 mt-1">
 
-                            <p class="text-purple-100 mt-1">
+                            Cari, filter, dan kelola seluruh detail licensing software perusahaan.
 
-                                Detail Data Lisensi Software Perusahaan
-
-                            </p>
-
-                        </div>
+                        </p>
 
                     </div>
 
                 </div>
 
-                <a href="{{ route('software-detail.create') }}"
-                    class="inline-flex items-center gap-2 bg-white text-purple-700 font-semibold px-6 py-3 rounded-xl shadow hover:shadow-xl hover:scale-105 transition duration-300">
+                <a href="{{ route('software-master.index') }}"
+                   class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-indigo-700 font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200">
 
-                    <i class="bi bi-plus-circle-fill"></i>
+                    <i class="bi bi-arrow-left-circle-fill"></i>
 
-                    Tambah Detail
+                    Kembali ke Software Master
 
                 </a>
 
@@ -59,23 +55,24 @@
 
     <div class="max-w-7xl mx-auto px-6 py-8">
 
-        <!-- Information Cards -->
+        {{-- ================= DASHBOARD ================= --}}
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
 
-            <div class="bg-white rounded-2xl shadow-md p-6 border border-slate-100">
+            {{-- Total Detail --}}
+            <div class="bg-white rounded-2xl shadow border border-slate-200 p-6">
 
                 <div class="flex justify-between items-center">
 
                     <div>
 
-                        <p class="text-sm text-slate-500">
+                        <p class="text-slate-500">
 
                             Total Detail
 
                         </p>
 
-                        <h2 class="text-3xl font-bold text-slate-800 mt-2">
+                        <h2 class="text-4xl font-bold text-slate-800 mt-2">
 
                             {{ $details->total() }}
 
@@ -83,39 +80,9 @@
 
                     </div>
 
-                    <div class="w-14 h-14 rounded-xl bg-purple-100 flex items-center justify-center">
+                    <div class="w-16 h-16 rounded-2xl bg-cyan-100 flex items-center justify-center">
 
-                        <i class="bi bi-database-fill text-purple-600 text-2xl"></i>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="bg-white rounded-2xl shadow-md p-6 border border-slate-100">
-
-                <div class="flex justify-between items-center">
-
-                    <div>
-
-                        <p class="text-sm text-slate-500">
-
-                            Current Page
-
-                        </p>
-
-                        <h2 class="text-3xl font-bold text-slate-800 mt-2">
-
-                            {{ $details->count() }}
-
-                        </h2>
-
-                    </div>
-
-                    <div class="w-14 h-14 rounded-xl bg-pink-100 flex items-center justify-center">
-
-                        <i class="bi bi-list-check text-pink-600 text-2xl"></i>
+                        <i class="bi bi-list-check text-3xl text-cyan-700"></i>
 
                     </div>
 
@@ -123,29 +90,92 @@
 
             </div>
 
-            <div class="bg-white rounded-2xl shadow-md p-6 border border-slate-100">
+            {{-- Product Family --}}
+            <div class="bg-white rounded-2xl shadow border border-slate-200 p-6">
 
                 <div class="flex justify-between items-center">
 
                     <div>
 
-                        <p class="text-sm text-slate-500">
+                        <p class="text-slate-500">
 
-                            System Status
+                            Product Family
 
                         </p>
 
-                        <h2 class="text-2xl font-bold text-green-600 mt-3">
+                        <h2 class="text-4xl font-bold text-indigo-700 mt-2">
 
-                            Active
+                            {{ $productFamilies->count() }}
 
                         </h2>
 
                     </div>
 
-                    <div class="w-14 h-14 rounded-xl bg-green-100 flex items-center justify-center">
+                    <div class="w-16 h-16 rounded-2xl bg-indigo-100 flex items-center justify-center">
 
-                        <i class="bi bi-check-circle-fill text-green-600 text-2xl"></i>
+                        <i class="bi bi-box-seam text-3xl text-indigo-700"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {{-- Version --}}
+            <div class="bg-white rounded-2xl shadow border border-slate-200 p-6">
+
+                <div class="flex justify-between items-center">
+
+                    <div>
+
+                        <p class="text-slate-500">
+
+                            Version
+
+                        </p>
+
+                        <h2 class="text-4xl font-bold text-emerald-700 mt-2">
+
+                            {{ $versions->count() }}
+
+                        </h2>
+
+                    </div>
+
+                    <div class="w-16 h-16 rounded-2xl bg-emerald-100 flex items-center justify-center">
+
+                        <i class="bi bi-layers text-3xl text-emerald-700"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {{-- License Pool --}}
+            <div class="bg-white rounded-2xl shadow border border-slate-200 p-6">
+
+                <div class="flex justify-between items-center">
+
+                    <div>
+
+                        <p class="text-slate-500">
+
+                            License Pool
+
+                        </p>
+
+                        <h2 class="text-4xl font-bold text-amber-600 mt-2">
+
+                            {{ $licensePools->count() }}
+
+                        </h2>
+
+                    </div>
+
+                    <div class="w-16 h-16 rounded-2xl bg-amber-100 flex items-center justify-center">
+
+                        <i class="bi bi-collection text-3xl text-amber-600"></i>
 
                     </div>
 
@@ -155,41 +185,162 @@
 
         </div>
 
-        <!-- Search -->
+        {{-- ================= SEARCH & FILTER ================= --}}
 
-        <div class="bg-white rounded-2xl shadow-md p-6 mb-8">
+        <div class="bg-white rounded-2xl shadow border border-slate-200 p-6 mb-8">
 
-            <form method="GET"
-                action="{{ route('software-detail.index') }}">
+            <form
+                action="{{ route('software-detail.index') }}"
+                method="GET">
 
-                <div class="flex flex-col md:flex-row gap-4">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
 
-                    <div class="flex-1 relative">
+                    {{-- Search --}}
+                    <div class="lg:col-span-12 relative">
 
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
-
-                            <i class="bi bi-search"></i>
-
-                        </span>
+                        <i class="bi bi-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
 
                         <input
                             type="text"
                             name="search"
-                            value="{{ $search }}"
-                            placeholder="Cari Licensing ID, License Pool, Product Family atau Version..."
-                            class="w-full rounded-xl border-slate-300 pl-12 py-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                            value="{{ request('search') }}"
+                            placeholder="Cari Licensing ID, Product Family, Version, License Pool atau Keterangan..."
+                            class="w-full rounded-xl border-slate-300 pl-11 py-3 focus:ring-indigo-500 focus:border-indigo-500">
 
                     </div>
 
-                    <button
-                        type="submit"
-                        class="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-purple-700 text-white font-semibold hover:bg-purple-800 transition">
+                    {{-- Product Family --}}
+                    <div class="lg:col-span-4">
 
-                        <i class="bi bi-search"></i>
+                        <label class="block text-sm font-semibold text-slate-600 mb-2">
 
-                        Search
+                            Product Family
 
-                    </button>
+                        </label>
+
+                        <select
+                            name="ProductFamily"
+                            class="w-full rounded-xl border-slate-300 focus:ring-indigo-500 focus:border-indigo-500">
+
+                            <option value="">Semua Product Family</option>
+
+                            @foreach($productFamilies as $family)
+
+                                <option
+                                    value="{{ $family }}"
+                                    @selected(request('ProductFamily') == $family)>
+
+                                    {{ $family }}
+
+                                </option>
+
+                            @endforeach
+
+                        </select>
+
+                    </div>
+
+                    {{-- Version --}}
+                    <div class="lg:col-span-4">
+
+                        <label class="block text-sm font-semibold text-slate-600 mb-2">
+
+                            Version
+
+                        </label>
+
+                        <select
+                            name="Version"
+                            class="w-full rounded-xl border-slate-300 focus:ring-indigo-500 focus:border-indigo-500">
+
+                            <option value="">Semua Version</option>
+
+                            @foreach($versions as $version)
+
+                                <option
+                                    value="{{ $version }}"
+                                    @selected(request('Version') == $version)>
+
+                                    {{ $version }}
+
+                                </option>
+
+                            @endforeach
+
+                        </select>
+
+                    </div>
+
+                    {{-- License Pool --}}
+                    <div class="lg:col-span-4">
+
+                        <label class="block text-sm font-semibold text-slate-600 mb-2">
+
+                            License Pool
+
+                        </label>
+
+                        <select
+                            name="LicensePool"
+                            class="w-full rounded-xl border-slate-300 focus:ring-indigo-500 focus:border-indigo-500">
+
+                            <option value="">Semua License Pool</option>
+
+                            @foreach($licensePools as $pool)
+
+                                <option
+                                    value="{{ $pool }}"
+                                    @selected(request('LicensePool') == $pool)>
+
+                                    {{ $pool }}
+
+                                </option>
+
+                            @endforeach
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <div class="flex flex-col xl:flex-row justify-between items-center mt-6 gap-4">
+
+                    <div>
+
+                        <span class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-cyan-100 text-cyan-700 font-semibold">
+
+                            <i class="bi bi-funnel-fill"></i>
+
+                            {{ $total }} Data Ditemukan
+
+                        </span>
+
+                    </div>
+
+                    <div class="flex gap-3">
+
+                        <a
+                            href="{{ route('software-detail.index') }}"
+                            class="px-6 py-3 rounded-xl bg-slate-500 hover:bg-slate-600 text-white font-semibold transition">
+
+                            <i class="bi bi-arrow-clockwise me-2"></i>
+
+                            Reset
+
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="px-8 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition">
+
+                            <i class="bi bi-search me-2"></i>
+
+                            Search
+
+                        </button>
+
+                    </div>
 
                 </div>
 
@@ -197,157 +348,278 @@
 
         </div>
 
-        <!-- Table Card -->
+        {{-- ================= RESULT TABLE ================= --}}
 
-        <div class="bg-white rounded-2xl shadow-md overflow-hidden border border-slate-100">
+        <div class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
 
-            <!-- Table Header -->
-
-            <div class="px-6 py-5 border-b border-slate-200 flex items-center justify-between">
+            <div class="bg-slate-900 text-white px-6 py-5 flex flex-col lg:flex-row justify-between lg:items-center gap-4">
 
                 <div>
 
-                    <h2 class="text-xl font-bold text-slate-800">
+                    <h2 class="text-2xl font-bold">
 
-                        Software Detail Licensing
+                        Detail Licensing Result
 
                     </h2>
 
-                    <p class="text-sm text-slate-500 mt-1">
+                    <p class="text-slate-300 mt-1">
 
-                        Daftar detail lisensi software perusahaan
+                        Menampilkan seluruh data detail licensing berdasarkan filter yang dipilih.
 
                     </p>
 
                 </div>
 
-                <div class="hidden md:flex items-center gap-2 text-sm text-slate-500">
+                <div>
 
-                    <i class="bi bi-key-fill text-purple-600"></i>
+                    <span class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-cyan-500 font-semibold">
 
-                    Detail License
+                        <i class="bi bi-database-fill"></i>
+
+                        {{ $total }} Records
+
+                    </span>
 
                 </div>
 
             </div>
 
-            <!-- Responsive Table -->
+            <div class="overflow-x-auto">
+                        {{-- ================= TABLE CARD ================= --}}
+
+        <div class="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
+
+            {{-- TABLE HEADER --}}
+
+            <div class="px-8 py-6 border-b border-slate-200 bg-gradient-to-r from-purple-50 to-pink-50">
+
+                <div class="flex flex-col md:flex-row justify-between md:items-center gap-4">
+
+                    <div>
+
+                        <div class="flex items-center gap-3">
+
+                            <div class="w-12 h-12 rounded-xl bg-purple-600 flex items-center justify-center text-white shadow">
+
+                                <i class="bi bi-key-fill text-2xl"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h2 class="text-2xl font-bold text-slate-800">
+
+                                    Detail Licensing Database
+
+                                </h2>
+
+                                <p class="text-sm text-slate-500 mt-1">
+
+                                    Seluruh data detail lisensi software yang terdaftar.
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="flex items-center gap-2 px-5 py-3 rounded-xl bg-white border border-purple-200 text-purple-700 font-semibold shadow-sm">
+
+                        <i class="bi bi-database-fill-check"></i>
+
+                        {{ $details->total() }} Records
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            {{-- TABLE --}}
 
             <div class="overflow-x-auto">
 
-                <table class="w-full text-sm text-left">
+                <table class="min-w-full text-sm">
 
-                    <thead class="bg-purple-700 text-white">
+
+                    <thead class="bg-slate-900 text-white">
+
 
                         <tr>
 
-                            <th class="px-6 py-4 font-semibold text-center">
+
+                            <th class="px-6 py-4 text-center w-16">
 
                                 No
 
                             </th>
 
-                            <th class="px-6 py-4 font-semibold">
+
+                            <th class="px-6 py-4">
 
                                 Software
 
                             </th>
 
-                            <th class="px-6 py-4 font-semibold">
 
-                                Licensing ID
-
-                            </th>
-
-                            <th class="px-6 py-4 font-semibold">
+                            <th class="px-6 py-4">
 
                                 License Pool
 
                             </th>
 
-                            <th class="px-6 py-4 font-semibold">
+
+                            <th class="px-6 py-4">
 
                                 Product Family
 
                             </th>
 
-                            <th class="px-6 py-4 font-semibold">
+
+                            <th class="px-6 py-4">
 
                                 Version
 
                             </th>
 
-                            <th class="px-6 py-4 font-semibold">
+
+                            <th class="px-6 py-4 text-center">
 
                                 Quantity
 
                             </th>
 
-                            <th class="px-6 py-4 font-semibold text-center">
+
+                            <th class="px-6 py-4 text-right">
+
+                                Last Price
+
+                            </th>
+
+
+                            <th class="px-6 py-4">
+
+                                Last Buy Date
+
+                            </th>
+
+
+                            <th class="px-6 py-4">
+
+                                Keterangan
+
+                            </th>
+
+
+                            <th class="px-6 py-4 text-center">
 
                                 Action
 
                             </th>
 
+
                         </tr>
+
 
                     </thead>
 
-                    <tbody class="divide-y divide-slate-100">
 
-                        @forelse($details as $detail)
 
-                        <tr class="hover:bg-purple-50 transition">
+                    <tbody class="divide-y divide-slate-200 bg-white">
 
-                            <td class="px-6 py-4 text-center text-slate-600">
+
+                    @forelse($details as $detail)
+
+
+                        <tr class="hover:bg-purple-50 transition duration-200">
+
+
+                            {{-- NUMBER --}}
+
+                            <td class="px-6 py-5 text-center font-semibold text-slate-600">
+
 
                                 {{ $loop->iteration + ($details->currentPage()-1) * $details->perPage() }}
 
+
                             </td>
 
-                            <td class="px-6 py-4">
 
-                                <div class="font-semibold text-slate-800">
 
-                                    {{ $detail->software?->LicensingID ?? '-' }}
+                            {{-- SOFTWARE --}}
+
+                            <td class="px-6 py-5">
+
+
+                                <div class="flex flex-col">
+
+
+                                    <span class="font-bold text-slate-800">
+
+
+                                        {{ $detail->software?->LicensingID ?? '-' }}
+
+
+                                    </span>
+
+
+                                    <span class="text-xs text-slate-500 mt-1">
+
+
+                                        {{ $detail->software?->Vendor ?? '-' }}
+
+
+                                    </span>
+
 
                                 </div>
 
-                            </td>
-
-                            <td class="px-6 py-4 text-slate-600">
-
-                                {{ $detail->LicensingID ?? '-' }}
 
                             </td>
 
-                            <td class="px-6 py-4 text-slate-600">
 
-                                {{ $detail->LicensePool ?? '-' }}
 
-                            </td>
+                            {{-- LICENSE POOL --}}
 
-                            <td class="px-6 py-4 text-slate-600">
+                            <td class="px-6 py-5 text-slate-700">
 
-                                {{ $detail->ProductFamily ?? '-' }}
 
-                            </td>
+                                {{ $detail->LicensePool ?: '-' }}
 
-                            <td class="px-6 py-4 text-slate-600">
-
-                                {{ $detail->Version ?? '-' }}
 
                             </td>
 
-                            <td class="px-6 py-4">
 
-                                @if($detail->Quantity)
 
-                                    <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
+                            {{-- PRODUCT FAMILY --}}
 
-                                        <i class="bi bi-box-seam-fill"></i>
+                            <td class="px-6 py-5 text-slate-700">
 
-                                        {{ $detail->Quantity }}
+
+                                {{ $detail->ProductFamily ?: '-' }}
+
+
+                            </td>
+
+
+
+                            {{-- VERSION --}}
+
+                            <td class="px-6 py-5">
+
+
+                                @if($detail->Version)
+
+                                    <span class="inline-flex px-3 py-1 rounded-full bg-blue-100 text-blue-700 font-semibold text-xs">
+
+
+                                        {{ $detail->Version }}
+
 
                                     </span>
 
@@ -357,102 +629,238 @@
 
                                 @endif
 
+
                             </td>
 
-                            <td class="px-6 py-4">
-
-                                <div class="flex items-center justify-center gap-2">
 
 
-                                <!-- View -->
-                                <a href="{{ route('software-detail.show', $detail) }}"
-                                    class="w-9 h-9 rounded-lg bg-cyan-100 text-cyan-700 flex items-center justify-center hover:bg-cyan-200 transition"
-                                    title="Detail">
+                            {{-- QUANTITY --}}
 
-                                    <i class="bi bi-eye-fill"></i>
+                            <td class="px-6 py-5 text-center">
 
-                                </a>
 
-                                <!-- Edit -->
-                                <a href="{{ route('software-detail.edit', $detail) }}"
-                                    class="w-9 h-9 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center hover:bg-amber-200 transition"
-                                    title="Edit">
+                                @if($detail->Quantity)
 
-                                    <i class="bi bi-pencil-fill"></i>
+                                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-100 text-emerald-700 font-bold">
 
-                                </a>
 
-                                <!-- Delete -->
-                                <form
-                                    action="{{ route('software-detail.destroy', $detail) }}"
-                                    method="POST"
-                                    class="delete-form">
+                                        <i class="bi bi-box-seam-fill"></i>
 
-                                    @csrf
-                                    @method('DELETE')
 
-                                    <button
-                                        type="submit"
-                                        class="w-9 h-9 rounded-lg bg-red-100 text-red-700 flex items-center justify-center hover:bg-red-200 transition"
-                                        title="Delete">
+                                        {{ $detail->Quantity }}
 
-                                        <i class="bi bi-trash-fill"></i>
 
-                                    </button>
+                                    </span>
 
-                                </form>
 
-                            </div>
+                                @else
 
-                        </td>
+                                    -
 
-                    </tr>
+                                @endif
 
-                    @empty
 
-                    <tr>
+                            </td>
 
-                        <td colspan="8" class="px-6 py-12 text-center">
 
-                            <div class="flex flex-col items-center">
 
-                                <div class="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mb-4">
+                            {{-- PRICE --}}
 
-                                    <i class="bi bi-folder-x text-3xl text-purple-400"></i>
+                            <td class="px-6 py-5 text-right font-semibold text-slate-700">
 
-                                </div>
 
-                                <h3 class="font-semibold text-slate-700">
+                                {{ $detail->LastPrice 
+                                    ? 'Rp ' . number_format($detail->LastPrice,0,',','.') 
+                                    : '-' 
+                                }}
 
-                                    Belum ada data detail licensing
 
-                                </h3>
+                            </td>
 
-                                <p class="text-sm text-slate-500 mt-1">
 
-                                    Silakan tambahkan detail lisensi software terlebih dahulu.
+
+                            {{-- BUY DATE --}}
+
+                            <td class="px-6 py-5 text-slate-700">
+
+
+                                {{ 
+                                    $detail->LastBuyDate 
+                                    ? $detail->LastBuyDate->format('d M Y') 
+                                    : '-' 
+                                }}
+
+
+                            </td>
+
+
+
+                            {{-- DESCRIPTION --}}
+
+                            <td class="px-6 py-5 max-w-xs">
+
+
+                                <p class="line-clamp-2 text-slate-600">
+
+
+                                    {{ $detail->Keterangan ?: '-' }}
+
 
                                 </p>
 
-                            </div>
 
-                        </td>
+                            </td>
 
-                    </tr>
+
+
+                            {{-- ACTION --}}
+
+                            <td class="px-6 py-5">
+
+
+                                <div class="flex justify-center gap-2">
+
+
+                                    {{-- VIEW --}}
+
+                                    <a href="{{ route('software-detail.show',$detail) }}"
+
+                                       class="w-10 h-10 rounded-xl bg-cyan-100 text-cyan-700 hover:bg-cyan-200 flex items-center justify-center transition"
+
+                                       title="View Detail">
+
+
+                                        <i class="bi bi-eye-fill"></i>
+
+
+                                    </a>
+
+
+
+                                    {{-- EDIT --}}
+
+                                    <a href="{{ route('software-detail.edit',$detail) }}"
+
+                                       class="w-10 h-10 rounded-xl bg-yellow-100 text-yellow-700 hover:bg-yellow-200 flex items-center justify-center transition"
+
+                                       title="Edit">
+
+
+                                        <i class="bi bi-pencil-fill"></i>
+
+
+                                    </a>
+
+
+
+                                    {{-- DELETE --}}
+
+                                    <form action="{{ route('software-detail.destroy',$detail) }}"
+
+                                          method="POST"
+
+                                          class="delete-form">
+
+
+                                        @csrf
+
+                                        @method('DELETE')
+
+
+                                        <button
+
+                                            type="submit"
+
+                                            class="w-10 h-10 rounded-xl bg-red-100 text-red-700 hover:bg-red-200 flex items-center justify-center transition"
+
+                                            title="Delete">
+
+
+                                            <i class="bi bi-trash-fill"></i>
+
+
+                                        </button>
+
+
+                                    </form>
+
+
+                                </div>
+
+
+                            </td>
+
+
+                        </tr>
+
+
+                    @empty
+
+
+                        <tr>
+
+
+                            <td colspan="10" class="px-8 py-16 text-center">
+
+
+                                <div class="flex flex-col items-center">
+
+
+                                    <div class="w-24 h-24 rounded-full bg-purple-100 flex items-center justify-center mb-6">
+
+
+                                        <i class="bi bi-folder-x text-5xl text-purple-500"></i>
+
+
+                                    </div>
+
+
+
+                                    <h3 class="text-2xl font-bold text-slate-700">
+
+
+                                        Belum Ada Detail Licensing
+
+
+                                    </h3>
+
+
+
+                                    <p class="text-slate-500 mt-2 max-w-lg">
+
+
+                                        Belum terdapat data detail lisensi.
+                                        Tambahkan detail licensing melalui menu Software Master.
+
+
+                                    </p>
+
+
+
+                                </div>
+
+
+                            </td>
+
+
+                        </tr>
+
 
                     @endforelse
 
+
                     </tbody>
+
 
                 </table>
 
-            </div>
 
-            <!-- Pagination -->
+            </div>
+                        {{-- ================= PAGINATION ================= --}}
 
             @if($details->hasPages())
 
-                <div class="px-6 py-5 border-t border-slate-200">
+                <div class="px-8 py-6 border-t border-slate-200 bg-slate-50">
 
                     {{ $details->links() }}
 
@@ -460,19 +868,26 @@
 
             @endif
 
+
         </div>
+
 
     </div>
 
+
 </div>
 
-{{-- SweetAlert Notification --}}
+
+
+{{-- ================= SWEET ALERT SUCCESS ================= --}}
+
 
 @if(session('success'))
 
 <script>
 
 document.addEventListener('DOMContentLoaded', function () {
+
 
     Swal.fire({
 
@@ -482,7 +897,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         text: @json(session('success')),
 
-        timer: 2000,
+        timer: 1500,
 
         showConfirmButton: false,
 
@@ -490,17 +905,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
+
 });
+
 
 </script>
 
 @endif
+
+
+
+
+{{-- ================= SWEET ALERT ERROR ================= --}}
+
 
 @if(session('error'))
 
 <script>
 
 document.addEventListener('DOMContentLoaded', function () {
+
 
     Swal.fire({
 
@@ -514,57 +938,89 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
+
 });
+
 
 </script>
 
 @endif
 
-{{-- Delete Confirmation --}}
+
+
+
+{{-- ================= DELETE CONFIRMATION ================= --}}
+
 
 <script>
 
+
 document.querySelectorAll('.delete-form').forEach(form => {
+
 
     form.addEventListener('submit', function(e){
 
+
         e.preventDefault();
+
+
 
         Swal.fire({
 
-            title: 'Hapus Data?',
 
-            text: 'Detail licensing yang dihapus tidak dapat dikembalikan.',
+            title: 'Hapus Detail Licensing?',
+
+
+            text: 'Data yang sudah dihapus tidak dapat dikembalikan.',
+
 
             icon: 'warning',
 
+
             showCancelButton: true,
 
-            confirmButtonText: 'Ya, Hapus',
-
-            cancelButtonText: 'Batal',
 
             confirmButtonColor: '#dc2626',
 
-            cancelButtonColor: '#6b7280',
+
+            cancelButtonColor: '#64748b',
+
+
+            confirmButtonText: 'Ya, Hapus',
+
+
+            cancelButtonText: 'Batal',
+
 
             reverseButtons: true
 
-        }).then((result) => {
+
+
+        }).then((result)=>{
+
 
             if(result.isConfirmed){
 
+
                 form.submit();
+
 
             }
 
+
         });
+
+
 
     });
 
+
+
 });
+
 
 </script>
 
-@endsection
 
+
+@endsection

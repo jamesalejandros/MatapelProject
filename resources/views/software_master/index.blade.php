@@ -40,14 +40,27 @@
 
                 </div>
 
-                <a href="{{ route('software-master.create') }}"
-                    class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-indigo-700 font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200">
+                <div class="flex flex-wrap gap-3">
 
-                    <i class="bi bi-plus-circle-fill"></i>
+    <a href="{{ route('software-detail.index') }}"
+       class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-cyan-500 text-white font-semibold shadow-lg hover:bg-cyan-600 transition">
 
-                    Tambah Software
+        <i class="bi bi-funnel-fill"></i>
 
-                </a>
+        Detail Search & Filter
+
+    </a>
+
+    <a href="{{ route('software-master.create') }}"
+       class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-indigo-700 font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200">
+
+        <i class="bi bi-plus-circle-fill"></i>
+
+        Tambah Software
+
+    </a>
+
+</div>
 
             </div>
 
