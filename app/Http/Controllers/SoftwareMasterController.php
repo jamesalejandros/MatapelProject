@@ -76,9 +76,28 @@ class SoftwareMasterController extends Controller
     {
         $organizations = Organization::orderBy('Name')->get();
 
+
+        $vendors = SoftwareMaster::whereNotNull('Vendor')
+            ->where('Vendor', '!=', '')
+            ->distinct()
+            ->orderBy('Vendor')
+            ->pluck('Vendor');
+
+
+        $parentPrograms = SoftwareMaster::whereNotNull('ParentProgram')
+            ->where('ParentProgram', '!=', '')
+            ->distinct()
+            ->orderBy('ParentProgram')
+            ->pluck('ParentProgram');
+
+
         return view(
             'software_master.create',
-            compact('organizations')
+            compact(
+                'organizations',
+                'vendors',
+                'parentPrograms'
+            )
         );
     }
 
@@ -192,11 +211,28 @@ class SoftwareMasterController extends Controller
     {
         $organizations = Organization::orderBy('Name')->get();
 
+
+        $vendors = SoftwareMaster::whereNotNull('Vendor')
+            ->where('Vendor', '!=', '')
+            ->distinct()
+            ->orderBy('Vendor')
+            ->pluck('Vendor');
+
+
+        $parentPrograms = SoftwareMaster::whereNotNull('ParentProgram')
+            ->where('ParentProgram', '!=', '')
+            ->distinct()
+            ->orderBy('ParentProgram')
+            ->pluck('ParentProgram');
+
+
         return view(
             'software_master.edit',
             compact(
                 'softwareMaster',
-                'organizations'
+                'organizations',
+                'vendors',
+                'parentPrograms'
             )
         );
     }

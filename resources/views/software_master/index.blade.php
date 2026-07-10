@@ -114,7 +114,7 @@
 
                         <p class="text-slate-500">
 
-                            Total Detail
+                            Total Detail Page ini
 
                         </p>
 

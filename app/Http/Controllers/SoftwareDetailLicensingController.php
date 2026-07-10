@@ -12,84 +12,101 @@ class SoftwareDetailLicensingController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-{
-    $search = trim($request->search);
+    {
+        $search = trim($request->search);
 
-    $productFamily = $request->ProductFamily;
+        $productFamilies = $request->input('ProductFamily', []);
 
-    $version = $request->Version;
+        $versions = $request->input('Version', []);
 
-    $licensePool = $request->LicensePool;
+        $licensePools = $request->input('LicensePool', []);
 
-    $query = SoftwareDetailLicensing::with('software');
+        $query = SoftwareDetailLicensing::with('software');
 
-    if ($search) {
+        if ($search) {
 
-        $query->where(function ($q) use ($search) {
+            $query->where(function ($q) use ($search) {
 
-            $q->where('LicensingID', 'LIKE', "%{$search}%")
-              ->orWhere('ProductFamily', 'LIKE', "%{$search}%")
-              ->orWhere('Version', 'LIKE', "%{$search}%")
-              ->orWhere('LicensePool', 'LIKE', "%{$search}%")
-              ->orWhere('Keterangan', 'LIKE', "%{$search}%");
+                $q->where('LicensingID', 'LIKE', "%{$search}%")
+                    ->orWhere('ProductFamily', 'LIKE', "%{$search}%")
+                    ->orWhere('Version', 'LIKE', "%{$search}%")
+                    ->orWhere('LicensePool', 'LIKE', "%{$search}%")
+                    ->orWhere('Keterangan', 'LIKE', "%{$search}%");
 
-        });
+            });
 
+        }
+
+        if (!empty($productFamilies)) {
+            $query->whereIn('ProductFamily', $productFamilies);
+        }
+
+        if (!empty($versions)) {
+            $query->whereIn('Version', $versions);
+        }
+
+        if (!empty($licensePools)) {
+            $query->whereIn('LicensePool', $licensePools);
+        }
+
+        /*
+    |--------------------------------------------------------------------------
+    | TOTAL RECORD
+    |--------------------------------------------------------------------------
+    */
+
+        $total = (clone $query)->count();
+
+        /*
+        |--------------------------------------------------------------------------
+        | TOTAL QUANTITY (FILTERED)
+        |--------------------------------------------------------------------------
+        */
+
+        $totalQuantity = (clone $query)->sum('Quantity');
+
+        /*
+        |--------------------------------------------------------------------------
+        | PAGINATION
+        |--------------------------------------------------------------------------
+        */
+
+        $details = $query
+            ->latest('created_at')
+            ->paginate(25)
+            ->withQueryString();
+
+        return view('software_detail.index', [
+
+            'details' => $details,
+
+            'search' => $search,
+
+            'total' => $total,
+
+            'totalQuantity' => $totalQuantity,
+
+
+            'productFamilies' => SoftwareDetailLicensing::select('ProductFamily')
+                ->whereNotNull('ProductFamily')
+                ->distinct()
+                ->orderBy('ProductFamily')
+                ->pluck('ProductFamily'),
+
+            'versions' => SoftwareDetailLicensing::select('Version')
+                ->whereNotNull('Version')
+                ->distinct()
+                ->orderBy('Version')
+                ->pluck('Version'),
+
+            'licensePools' => SoftwareDetailLicensing::select('LicensePool')
+                ->whereNotNull('LicensePool')
+                ->distinct()
+                ->orderBy('LicensePool')
+                ->pluck('LicensePool'),
+
+        ]);
     }
-
-    if ($productFamily) {
-
-        $query->where('ProductFamily', $productFamily);
-
-    }
-
-    if ($version) {
-
-        $query->where('Version', $version);
-
-    }
-
-    if ($licensePool) {
-
-        $query->where('LicensePool', $licensePool);
-
-    }
-
-    $total = $query->count();
-
-    $details = $query
-        ->latest()
-        ->paginate(25)
-        ->withQueryString();
-
-    return view('software_detail.index', [
-
-        'details' => $details,
-
-        'search' => $search,
-
-        'total' => $total,
-
-        'productFamilies' => SoftwareDetailLicensing::select('ProductFamily')
-            ->whereNotNull('ProductFamily')
-            ->distinct()
-            ->orderBy('ProductFamily')
-            ->pluck('ProductFamily'),
-
-        'versions' => SoftwareDetailLicensing::select('Version')
-            ->whereNotNull('Version')
-            ->distinct()
-            ->orderBy('Version')
-            ->pluck('Version'),
-
-        'licensePools' => SoftwareDetailLicensing::select('LicensePool')
-            ->whereNotNull('LicensePool')
-            ->distinct()
-            ->orderBy('LicensePool')
-            ->pluck('LicensePool'),
-
-    ]);
-}
 
     /**
      * Show the form for creating a new resource.
@@ -98,9 +115,31 @@ class SoftwareDetailLicensingController extends Controller
     {
         $softwares = SoftwareMaster::orderBy('LicensingID')->get();
 
+
+        $licensePools = SoftwareDetailLicensing::whereNotNull('LicensePool')
+            ->where('LicensePool', '!=', '')
+            ->distinct()
+            ->orderBy('LicensePool')
+            ->pluck('LicensePool');
+
+
+        $productFamilies = SoftwareDetailLicensing::whereNotNull('ProductFamily')
+            ->where('ProductFamily', '!=', '')
+            ->distinct()
+            ->orderBy('ProductFamily')
+            ->pluck('ProductFamily');
+
+
         return view('software_detail.create', [
-            'softwares'            => $softwares,
-            'selectedLicensingID'  => $softwareMaster->LicensingID,
+
+            'softwares' => $softwares,
+
+            'selectedLicensingID' => $softwareMaster->LicensingID,
+
+            'licensePools' => $licensePools,
+
+            'productFamilies' => $productFamilies,
+
         ]);
     }
 
@@ -158,12 +197,12 @@ class SoftwareDetailLicensingController extends Controller
         ], [
 
             'LicensingID.required' => 'Software wajib dipilih.',
-            'LicensingID.exists'   => 'Software tidak ditemukan.',
+            'LicensingID.exists' => 'Software tidak ditemukan.',
 
-            'Quantity.integer'     => 'Quantity harus berupa angka.',
-            'Quantity.min'         => 'Quantity minimal 1.',
+            'Quantity.integer' => 'Quantity harus berupa angka.',
+            'Quantity.min' => 'Quantity minimal 1.',
 
-            'LastBuyDate.date'     => 'Format tanggal tidak valid.',
+            'LastBuyDate.date' => 'Format tanggal tidak valid.',
 
         ]);
 
@@ -205,11 +244,28 @@ class SoftwareDetailLicensingController extends Controller
     {
         $softwares = SoftwareMaster::orderBy('LicensingID')->get();
 
+
+        $licensePools = SoftwareDetailLicensing::whereNotNull('LicensePool')
+            ->where('LicensePool', '!=', '')
+            ->distinct()
+            ->orderBy('LicensePool')
+            ->pluck('LicensePool');
+
+
+        $productFamilies = SoftwareDetailLicensing::whereNotNull('ProductFamily')
+            ->where('ProductFamily', '!=', '')
+            ->distinct()
+            ->orderBy('ProductFamily')
+            ->pluck('ProductFamily');
+
+
         return view(
             'software_detail.edit',
             compact(
                 'softwareDetail',
-                'softwares'
+                'softwares',
+                'licensePools',
+                'productFamilies'
             )
         );
     }
@@ -268,12 +324,12 @@ class SoftwareDetailLicensingController extends Controller
         ], [
 
             'LicensingID.required' => 'Software wajib dipilih.',
-            'LicensingID.exists'   => 'Software tidak ditemukan.',
+            'LicensingID.exists' => 'Software tidak ditemukan.',
 
-            'Quantity.integer'     => 'Quantity harus berupa angka.',
-            'Quantity.min'         => 'Quantity minimal 1.',
+            'Quantity.integer' => 'Quantity harus berupa angka.',
+            'Quantity.min' => 'Quantity minimal 1.',
 
-            'LastBuyDate.date'     => 'Format tanggal tidak valid.',
+            'LastBuyDate.date' => 'Format tanggal tidak valid.',
 
         ]);
 
