@@ -4,7 +4,7 @@
 
     <div class="min-h-screen bg-slate-100">
 
-        ```
+        
         <!-- Hero -->
         <div class="bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 text-white shadow-lg">
 
