@@ -28,21 +28,28 @@ class SoftwareMasterController extends Controller
         ])
             ->when($search, function ($query) use ($search) {
 
-                $query->where(function ($q) use ($search) {
+    $statusSearch = strtolower(trim($search));
 
-                    $q->where('LicensingID', 'LIKE', "%{$search}%")
-                        ->orWhere('Vendor', 'LIKE', "%{$search}%")
-                        ->orWhere('ParentProgram', 'LIKE', "%{$search}%")
-                        ->orWhere('Status', 'LIKE', "%{$search}%")
-                        ->orWhereHas('organization', function ($org) use ($search) {
+    $query->where(function ($q) use ($search, $statusSearch) {
 
-                            $org->where('Name', 'LIKE', "%{$search}%");
+        $q->where('LicensingID', 'LIKE', "%{$search}%")
+            ->orWhere('Vendor', 'LIKE', "%{$search}%")
+            ->orWhere('ParentProgram', 'LIKE', "%{$search}%");
 
-                        });
+        // Search Status (harus exact match)
+        if (in_array($statusSearch, ['active', 'expired'])) {
+            $q->orWhere('Status', ucfirst($statusSearch));
+        } elseif (in_array($statusSearch, ['inactive', 'non active'])) {
+            $q->orWhere('Status', 'Non Active');
+        }
 
-                });
+        $q->orWhereHas('organization', function ($org) use ($search) {
+            $org->where('Name', 'LIKE', "%{$search}%");
+        });
 
-            })
+    });
+
+})
 
             ->latest()
             ->paginate(10)
