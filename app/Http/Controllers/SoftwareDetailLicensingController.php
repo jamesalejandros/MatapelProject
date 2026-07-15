@@ -76,6 +76,23 @@ class SoftwareDetailLicensingController extends Controller
             ->paginate(25)
             ->withQueryString();
 
+        $currentPage = $details->getCollection();
+
+        $pageProductFamilies = $currentPage
+            ->pluck('ProductFamily')
+            ->filter()
+            ->unique();
+
+        $pageVersions = $currentPage
+            ->pluck('Version')
+            ->filter()
+            ->unique();
+
+        $pageLicensePools = $currentPage
+            ->pluck('LicensePool')
+            ->filter()
+            ->unique();
+
         return view('software_detail.index', [
 
             'details' => $details,
@@ -85,6 +102,11 @@ class SoftwareDetailLicensingController extends Controller
             'total' => $total,
 
             'totalQuantity' => $totalQuantity,
+            'pageProductFamilies' => $pageProductFamilies,
+
+            'pageVersions' => $pageVersions,
+
+            'pageLicensePools' => $pageLicensePools,
 
 
             'productFamilies' => SoftwareDetailLicensing::select('ProductFamily')

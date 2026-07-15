@@ -150,12 +150,12 @@
                         <div>
 
                             <p class="text-slate-500">
-                                Status Sistem
+                                Organization
                             </p>
 
                             <h2 class="text-2xl font-bold text-green-600 mt-3">
 
-                                Online
+                                {{ number_format($totalOrganizations) }}
 
                             </h2>
 
@@ -163,7 +163,7 @@
 
                         <div class="w-14 h-14 rounded-xl bg-green-100 flex items-center justify-center">
 
-                            <i class="bi bi-check-circle-fill text-green-600 text-2xl"></i>
+                            <i class="bi bi-buildings text-5xl text-green-600"></i>
 
                         </div>
 

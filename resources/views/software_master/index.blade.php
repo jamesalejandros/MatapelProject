@@ -62,6 +62,15 @@
 
     </a>
 
+    <a href="{{ route('software-master.export') }}"
+    class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-green-500 text-white font-semibold shadow hover:bg-green-600 transition">
+
+    <i class="bi bi-file-earmark-excel-fill"></i>
+
+    Export Excel
+
+</a>
+
 </div>
 
             </div>

@@ -7,7 +7,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SoftwareMasterController;
 use App\Http\Controllers\SoftwareDetailLicensingController;
 use App\Http\Controllers\OrganizationController;
-
+use App\Exports\SoftwareMasterExport;
+use App\Exports\SoftwareDetailLicensingExport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\ExportController;
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -40,8 +43,27 @@ Route::middleware(['auth', 'verified'])->group(function () {
     |--------------------------------------------------------------------------
     */
 
+
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
+
+    /*
+|--------------------------------------------------------------------------
+| Export Excel
+|--------------------------------------------------------------------------
+*/
+
+
+    Route::get(
+        '/software-master/export',
+        [ExportController::class, 'softwareMaster']
+    )->name('software-master.export');
+
+
+    Route::get(
+        '/software-detail/export',
+        [ExportController::class, 'softwareDetail']
+    )->name('software-detail.export');
 
     /*
     |--------------------------------------------------------------------------
@@ -70,15 +92,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('software-master', SoftwareMasterController::class);
 
     Route::get(
-    '/software-detail',
-    [SoftwareDetailLicensingController::class, 'index']
+        '/software-detail',
+        [SoftwareDetailLicensingController::class, 'index']
     )->name('software-detail.index');
 
-        /*
-    |--------------------------------------------------------------------------
-    | Organization
-    |--------------------------------------------------------------------------
-    */
+    /*
+|--------------------------------------------------------------------------
+| Organization
+|--------------------------------------------------------------------------
+*/
 
     Route::resource('organizations', OrganizationController::class);
 

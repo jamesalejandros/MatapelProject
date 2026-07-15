@@ -39,14 +39,28 @@
 
                     </div>
 
-                    <a href="{{ route('software-master.index') }}"
-                        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-indigo-700 font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200">
+                    <div class="flex items-center gap-3">
 
-                        <i class="bi bi-arrow-left-circle-fill"></i>
+                        <a href="{{ route('software-master.index') }}"
+                            class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-indigo-700 font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200">
 
-                        Kembali ke Software Master
+                            <i class="bi bi-arrow-left-circle-fill"></i>
 
-                    </a>
+                            Kembali ke Software Master
+
+                        </a>
+
+
+                        <a href="{{ route('software-detail.export') }}"
+                            class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-green-500 text-white font-semibold shadow hover:bg-green-600 transition">
+
+                            <i class="bi bi-file-earmark-excel-fill"></i>
+
+                            Export Excel
+
+                        </a>
+
+                    </div>
 
                 </div>
 
@@ -106,7 +120,7 @@
 
                             <h2 class="text-4xl font-bold text-indigo-700 mt-2">
 
-                                {{ $productFamilies->count() }}
+                                {{ $pageProductFamilies->count() }}
 
                             </h2>
 
@@ -137,7 +151,7 @@
 
                             <h2 class="text-4xl font-bold text-emerald-700 mt-2">
 
-                                {{ $versions->count() }}
+                                {{ $pageVersions->count() }}
 
                             </h2>
 
@@ -168,7 +182,7 @@
 
                             <h2 class="text-4xl font-bold text-amber-600 mt-2">
 
-                                {{ $licensePools->count() }}
+                                {{ $pageLicensePools->count() }}
 
                             </h2>
 
@@ -690,7 +704,7 @@
                                                                         {{ $detail->LastPrice
                                         ? 'Rp ' . number_format($detail->LastPrice, 0, ',', '.')
                                         : '-' 
-                                                                                                                                                                }}
+                                                                                                                                                                                                                                                                                                }}
 
 
                                                                     </td>
@@ -703,10 +717,10 @@
 
 
                                                                         {{ 
-                                                                                                                                                                    $detail->LastBuyDate
+                                                                                                                                                                                                                                                                                                    $detail->LastBuyDate
                                         ? $detail->LastBuyDate->format('d M Y')
                                         : '-' 
-                                                                                                                                                                }}
+                                                                                                                                                                                                                                                                                                }}
 
 
                                                                     </td>
@@ -791,7 +805,7 @@
 
                                                                             </form>
 
-                                                                            
+
 
 
                                                                         </div>
@@ -1080,5 +1094,5 @@
 
             @endpush
 
-            
+
 @endsection
