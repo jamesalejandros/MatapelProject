@@ -4,7 +4,7 @@
 
     <div class="min-h-screen bg-slate-100">
 
-        
+
         <!-- Hero -->
         <div class="bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 text-white shadow-lg">
 
@@ -176,9 +176,7 @@
             <!-- Modules -->
 
             <h2 class="text-2xl font-bold text-slate-700 mb-5">
-
                 Application Modules
-
             </h2>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -195,16 +193,12 @@
                             <div>
 
                                 <h3 class="text-2xl font-bold text-slate-800">
-
                                     Software Master
-
                                 </h3>
 
                                 <p class="text-slate-500 mt-3">
-
                                     Mengelola seluruh data software yang dimiliki perusahaan, vendor, status lisensi, serta
                                     masa berlaku.
-
                                 </p>
 
                             </div>
@@ -234,14 +228,58 @@
 
                 </a>
 
-                <!-- Detail -->
+                <!-- Organization -->
 
-                
+                <a href="{{ route('organizations.index') }}">
+
+                    <div
+                        class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 p-8 border hover:border-green-500">
+
+                        <div class="flex justify-between items-center">
+
+                            <div>
+
+                                <h3 class="text-2xl font-bold text-slate-800">
+                                    Organization
+                                </h3>
+
+                                <p class="text-slate-500 mt-3">
+                                    Mengelola seluruh data organisasi yang digunakan sebagai referensi dalam sistem.
+                                </p>
+
+                            </div>
+
+                            <div
+                                class="w-20 h-20 rounded-2xl bg-green-100 flex items-center justify-center group-hover:scale-110 transition">
+
+                                <i class="bi bi-buildings text-5xl text-green-600"></i>
+
+                            </div>
+
+                        </div>
+
+                        <div class="mt-8">
+
+                            <span class="inline-flex items-center font-semibold text-green-600">
+
+                                Buka Modul
+
+                                <i class="bi bi-arrow-right ml-2"></i>
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </a>
 
             </div>
 
+
         </div>
-        
+
+
 
     </div>
 

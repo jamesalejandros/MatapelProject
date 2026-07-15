@@ -108,33 +108,109 @@
 
             <div class="bg-white rounded-2xl shadow border border-slate-200 p-6">
 
-                <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center">
 
-                    <div>
+        <div class="flex-1">
 
-                        <p class="text-slate-500">
+            <p class="text-slate-500 font-medium">
+                Status Software
+            </p>
 
-                            Total Detail Page ini
 
-                        </p>
+            <div class="grid grid-cols-3 gap-4 mt-5">
 
-                        <h2 class="text-4xl font-bold text-emerald-600 mt-2">
 
-                            {{ $softwareMasters->sum(fn($item) => $item->details->count()) }}
+                {{-- ACTIVE --}}
+                <div class="flex items-center gap-3">
 
-                        </h2>
+                    <div class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center">
+
+                        <i class="bi bi-check-circle-fill text-green-600 text-xl"></i>
 
                     </div>
 
-                    <div class="w-16 h-16 rounded-2xl bg-emerald-100 flex items-center justify-center">
+                    <div>
 
-                        <i class="bi bi-list-check text-3xl text-emerald-700"></i>
+                        <p class="text-xs text-slate-500">
+                            Active
+                        </p>
+
+                        <p class="text-xl font-bold text-green-600">
+                            {{ $activeCount }}
+                        </p>
 
                     </div>
 
                 </div>
 
+
+
+                {{-- INACTIVE --}}
+                <div class="flex items-center gap-3">
+
+                    <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center">
+
+                        <i class="bi bi-dash-circle-fill text-slate-600 text-xl"></i>
+
+                    </div>
+
+                    <div>
+
+                        <p class="text-xs text-slate-500">
+                            Inactive
+                        </p>
+
+                        <p class="text-xl font-bold text-slate-600">
+                            {{ $inactiveCount }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                {{-- EXPIRED --}}
+                <div class="flex items-center gap-3">
+
+                    <div class="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center">
+
+                        <i class="bi bi-x-circle-fill text-red-600 text-xl"></i>
+
+                    </div>
+
+                    <div>
+
+                        <p class="text-xs text-slate-500">
+                            Expired
+                        </p>
+
+                        <p class="text-xl font-bold text-red-600">
+                            {{ $expiredCount }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+
             </div>
+
+        </div>
+
+
+
+        {{-- ICON UTAMA --}}
+        <div class="ml-6 w-16 h-16 rounded-2xl bg-indigo-100 flex items-center justify-center flex-shrink-0">
+
+            <i class="bi bi-bar-chart-fill text-3xl text-indigo-700"></i>
+
+        </div>
+
+
+    </div>
+
+</div>
 
             <div
     @click="expiredModal = true"

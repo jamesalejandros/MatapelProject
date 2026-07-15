@@ -22,56 +22,120 @@ class SoftwareMasterController extends Controller
             $range = 30;
         }
 
+
         $softwareMasters = SoftwareMaster::with([
             'organization',
             'details'
         ])
             ->when($search, function ($query) use ($search) {
 
-    $statusSearch = strtolower(trim($search));
+                $statusSearch = strtolower(trim($search));
 
-    $query->where(function ($q) use ($search, $statusSearch) {
+                $query->where(function ($q) use ($search, $statusSearch) {
 
-        $q->where('LicensingID', 'LIKE', "%{$search}%")
-            ->orWhere('Vendor', 'LIKE', "%{$search}%")
-            ->orWhere('ParentProgram', 'LIKE', "%{$search}%");
+                    $q->where('LicensingID', 'LIKE', "%{$search}%")
+                        ->orWhere('Vendor', 'LIKE', "%{$search}%")
+                        ->orWhere('ParentProgram', 'LIKE', "%{$search}%");
 
-        // Search Status (harus exact match)
-        if (in_array($statusSearch, ['active', 'expired'])) {
-            $q->orWhere('Status', ucfirst($statusSearch));
-        } elseif (in_array($statusSearch, ['inactive', 'non active'])) {
-            $q->orWhere('Status', 'Non Active');
-        }
 
-        $q->orWhereHas('organization', function ($org) use ($search) {
-            $org->where('Name', 'LIKE', "%{$search}%");
-        });
+                    // Search Status
+                    $statusSearch = str_replace(['-', '_'], ' ', $statusSearch);
+                    $statusSearch = preg_replace('/\s+/', ' ', $statusSearch);
 
-    });
+                    if (in_array($statusSearch, ['active', 'expired'])) {
 
-})
+                        $q->orWhere('Status', ucfirst($statusSearch));
 
+                    } elseif (in_array($statusSearch, ['inactive', 'non active'])) {
+
+                        $q->orWhereIn('Status', [
+                            'Inactive',
+                            'Non Active'
+                        ]);
+
+                    }
+
+
+                    $q->orWhereHas('organization', function ($org) use ($search) {
+
+                        $org->where('Name', 'LIKE', "%{$search}%");
+
+                    });
+
+                });
+
+            })
             ->latest()
             ->paginate(10)
             ->withQueryString();
 
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | EXPIRED SOON
+        |--------------------------------------------------------------------------
+        */
+
         $expiredSoonQuery = SoftwareMaster::with('organization')
             ->whereNotNull('EndDate')
             ->whereDate('EndDate', '>=', now()->toDateString())
-            ->whereDate('EndDate', '<=', now()->copy()->addDays($range)->toDateString())
+            ->whereDate(
+                'EndDate',
+                '<=',
+                now()->copy()->addDays($range)->toDateString()
+            )
             ->orderBy('EndDate');
+
 
         $expiredSoonCount = (clone $expiredSoonQuery)->count();
 
         $expiredSoonList = (clone $expiredSoonQuery)->get();
 
+
+
+        /*
+|--------------------------------------------------------------------------
+| STATUS SUMMARY
+|--------------------------------------------------------------------------
+*/
+
+        $activeCount = SoftwareMaster::where('Status', 'Active')
+            ->count();
+
+
+        $inactiveCount = SoftwareMaster::whereIn('Status', [
+            'Inactive',
+            'Non Active',
+            ''
+        ])
+            ->count();
+
+
+        $expiredCount = SoftwareMaster::where('Status', 'Expired')
+            ->count();
+
+
         return view('software_master.index', [
 
             'softwareMasters' => $softwareMasters,
+
             'search' => $search,
+
             'range' => $range,
+
             'expiredSoonCount' => $expiredSoonCount,
+
             'expiredSoonList' => $expiredSoonList,
+
+
+            // STATUS CARD
+
+            'activeCount' => $activeCount,
+
+            'inactiveCount' => $inactiveCount,
+
+            'expiredCount' => $expiredCount,
 
         ]);
     }

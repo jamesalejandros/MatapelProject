@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SoftwareMasterController;
 use App\Http\Controllers\SoftwareDetailLicensingController;
+use App\Http\Controllers\OrganizationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +73,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     '/software-detail',
     [SoftwareDetailLicensingController::class, 'index']
     )->name('software-detail.index');
+
+        /*
+    |--------------------------------------------------------------------------
+    | Organization
+    |--------------------------------------------------------------------------
+    */
+
+    Route::resource('organizations', OrganizationController::class);
 
     /*
     |--------------------------------------------------------------------------
