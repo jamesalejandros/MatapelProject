@@ -128,82 +128,92 @@
 
             <div class="grid grid-cols-3 gap-4 mt-5">
 
+    {{-- ACTIVE --}}
+    <a href="{{ route('software-master.index', [
+        'search' => request('search'),
+        'status' => 'active'
+    ]) }}"
+        class="flex items-center gap-3 p-4 rounded-xl border transition duration-200
+        {{ request('status') == 'active'
+            ? 'bg-green-50 border-green-500 shadow-md'
+            : 'border-transparent hover:bg-green-50 hover:border-green-200 hover:shadow'
+        }}">
 
-                {{-- ACTIVE --}}
-                <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center">
+            <i class="bi bi-check-circle-fill text-green-600 text-xl"></i>
+        </div>
 
-                    <div class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center">
+        <div>
+            <p class="text-xs text-slate-500">
+                Active
+            </p>
 
-                        <i class="bi bi-check-circle-fill text-green-600 text-xl"></i>
+            <p class="text-xl font-bold text-green-600">
+                {{ $activeCount }}
+            </p>
+        </div>
 
-                    </div>
-
-                    <div>
-
-                        <p class="text-xs text-slate-500">
-                            Active
-                        </p>
-
-                        <p class="text-xl font-bold text-green-600">
-                            {{ $activeCount }}
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-
-                {{-- INACTIVE --}}
-                <div class="flex items-center gap-3">
-
-                    <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center">
-
-                        <i class="bi bi-dash-circle-fill text-slate-600 text-xl"></i>
-
-                    </div>
-
-                    <div>
-
-                        <p class="text-xs text-slate-500">
-                            Inactive
-                        </p>
-
-                        <p class="text-xl font-bold text-slate-600">
-                            {{ $inactiveCount }}
-                        </p>
-
-                    </div>
-
-                </div>
+    </a>
 
 
 
-                {{-- EXPIRED --}}
-                <div class="flex items-center gap-3">
+    {{-- INACTIVE --}}
+    <a href="{{ route('software-master.index', [
+        'search' => request('search'),
+        'status' => 'inactive'
+    ]) }}"
+        class="flex items-center gap-3 p-4 rounded-xl border transition duration-200
+        {{ request('status') == 'inactive'
+            ? 'bg-slate-100 border-slate-500 shadow-md'
+            : 'border-transparent hover:bg-slate-50 hover:border-slate-300 hover:shadow'
+        }}">
 
-                    <div class="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center">
+        <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center">
+            <i class="bi bi-dash-circle-fill text-slate-600 text-xl"></i>
+        </div>
 
-                        <i class="bi bi-x-circle-fill text-red-600 text-xl"></i>
+        <div>
+            <p class="text-xs text-slate-500">
+                Inactive
+            </p>
 
-                    </div>
+            <p class="text-xl font-bold text-slate-600">
+                {{ $inactiveCount }}
+            </p>
+        </div>
 
-                    <div>
-
-                        <p class="text-xs text-slate-500">
-                            Expired
-                        </p>
-
-                        <p class="text-xl font-bold text-red-600">
-                            {{ $expiredCount }}
-                        </p>
-
-                    </div>
-
-                </div>
+    </a>
 
 
-            </div>
+
+    {{-- EXPIRED --}}
+    <a href="{{ route('software-master.index', [
+        'search' => request('search'),
+        'status' => 'expired'
+    ]) }}"
+        class="flex items-center gap-3 p-4 rounded-xl border transition duration-200
+        {{ request('status') == 'expired'
+            ? 'bg-red-50 border-red-500 shadow-md'
+            : 'border-transparent hover:bg-red-50 hover:border-red-200 hover:shadow'
+        }}">
+
+        <div class="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center">
+            <i class="bi bi-x-circle-fill text-red-600 text-xl"></i>
+        </div>
+
+        <div>
+            <p class="text-xs text-slate-500">
+                Expired
+            </p>
+
+            <p class="text-xl font-bold text-red-600">
+                {{ $expiredCount }}
+            </p>
+        </div>
+
+    </a>
+
+</div>
 
         </div>
 
