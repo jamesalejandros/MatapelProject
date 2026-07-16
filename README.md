@@ -116,4 +116,4 @@ Akses aplikasi melalui browser Anda di alamat `http://127.0.0.1:8000`.
 ---
 
 ## 📄 Lisensi
-Proyek ini bersifat open-source dan dilindungi di bawah lisensi [MIT License](LICENSE).
+Proyek ini bersifat open-source dan dilindungi di bawah lisensi
