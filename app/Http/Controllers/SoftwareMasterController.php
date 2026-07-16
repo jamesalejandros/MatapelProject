@@ -13,147 +13,174 @@ class SoftwareMasterController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-{
-    $search = trim($request->input('search'));
-    $status = strtolower(trim($request->input('status', '')));
+    {
+        $search = trim($request->input('search'));
+        $status = strtolower(trim($request->input('status', '')));
 
-    $range = (int) $request->input('range', 30);
+        $range = (int) $request->input('range', 30);
 
-    if ($range < 1) {
-        $range = 30;
-    }
+        if ($range < 1) {
+            $range = 30;
+        }
 
-    $softwareMasters = SoftwareMaster::with([
-        'organization',
-        'details'
-    ])
-        // SEARCH
-        ->when($search, function ($query) use ($search) {
+        /*
+        |--------------------------------------------------------------------------
+        | BASE QUERY (SEARCH ONLY)
+        |--------------------------------------------------------------------------
+        | Query ini hanya dipakai untuk search.
+        | Nantinya akan di-clone untuk:
+        | - Status Summary
+        | - Data Table
+        |--------------------------------------------------------------------------
+        */
 
-            $statusSearch = strtolower(trim($search));
+        $baseQuery = SoftwareMaster::with([
+            'organization',
+            'details'
+        ])
+            ->when($search, function ($query) use ($search) {
 
-            $query->where(function ($q) use ($search, $statusSearch) {
+                $statusSearch = strtolower(trim($search));
 
-                $q->where('LicensingID', 'LIKE', "%{$search}%")
-                    ->orWhere('Vendor', 'LIKE', "%{$search}%")
-                    ->orWhere('ParentProgram', 'LIKE', "%{$search}%");
+                $query->where(function ($q) use ($search, $statusSearch) {
 
-                // Search Status
-                $statusSearch = str_replace(['-', '_'], ' ', $statusSearch);
-                $statusSearch = preg_replace('/\s+/', ' ', $statusSearch);
+                    $q->where('LicensingID', 'LIKE', "%{$search}%")
+                        ->orWhere('Vendor', 'LIKE', "%{$search}%")
+                        ->orWhere('ParentProgram', 'LIKE', "%{$search}%");
 
-                if (in_array($statusSearch, ['active', 'expired'])) {
+                    // Search Status
+                    $statusSearch = str_replace(['-', '_'], ' ', $statusSearch);
+                    $statusSearch = preg_replace('/\s+/', ' ', $statusSearch);
 
-                    $q->orWhere('Status', ucfirst($statusSearch));
+                    if (in_array($statusSearch, ['active', 'expired'])) {
 
-                } elseif (in_array($statusSearch, ['inactive', 'non active'])) {
+                        $q->orWhere('Status', ucfirst($statusSearch));
 
-                    $q->orWhereIn('Status', [
-                        'Inactive',
-                        'Non Active'
-                    ]);
+                    } elseif (in_array($statusSearch, ['inactive', 'non active'])) {
 
-                }
+                        $q->orWhereIn('Status', [
+                            'Inactive',
+                            'Non Active'
+                        ]);
 
-                $q->orWhereHas('organization', function ($org) use ($search) {
+                    }
 
-                    $org->where('Name', 'LIKE', "%{$search}%");
+                    $q->orWhereHas('organization', function ($org) use ($search) {
+
+                        $org->where('Name', 'LIKE', "%{$search}%");
+
+                    });
 
                 });
 
             });
 
-        })
 
-        // FILTER STATUS DARI CARD
-        ->when($status, function ($query) use ($status) {
+        /*
+        |--------------------------------------------------------------------------
+        | DATA TABLE
+        |--------------------------------------------------------------------------
+        */
 
-            if ($status == 'active') {
+        $softwareMasters = (clone $baseQuery)
 
-                $query->where('Status', 'Active');
+            ->when($status, function ($query) use ($status) {
 
-            } elseif ($status == 'expired') {
+                if ($status == 'active') {
 
-                $query->where('Status', 'Expired');
+                    $query->where('Status', 'Active');
 
-            } elseif ($status == 'inactive') {
+                } elseif ($status == 'expired') {
 
-                $query->whereIn('Status', [
-                    'Inactive',
-                    'Non Active',
-                    ''
-                ]);
+                    $query->where('Status', 'Expired');
 
-            }
+                } elseif ($status == 'inactive') {
 
-        })
+                    $query->whereIn('Status', [
+                        'Inactive',
+                        'Non Active',
+                        ''
+                    ]);
 
-        ->latest()
-        ->paginate(10)
-        ->withQueryString();
+                }
 
+            })
 
-    /*
-    |--------------------------------------------------------------------------
-    | EXPIRED SOON
-    |--------------------------------------------------------------------------
-    */
-
-    $expiredSoonQuery = SoftwareMaster::with('organization')
-        ->whereNotNull('EndDate')
-        ->whereDate('EndDate', '>=', now()->toDateString())
-        ->whereDate(
-            'EndDate',
-            '<=',
-            now()->copy()->addDays($range)->toDateString()
-        )
-        ->orderBy('EndDate');
-
-    $expiredSoonCount = (clone $expiredSoonQuery)->count();
-
-    $expiredSoonList = (clone $expiredSoonQuery)->get();
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | STATUS SUMMARY
-    |--------------------------------------------------------------------------
-    */
+        /*
+        |--------------------------------------------------------------------------
+        | EXPIRED SOON
+        |--------------------------------------------------------------------------
+        */
 
-    $activeCount = SoftwareMaster::where('Status', 'Active')->count();
+        $expiredSoonQuery = SoftwareMaster::with('organization')
+            ->whereNotNull('EndDate')
+            ->whereDate('EndDate', '>=', now()->toDateString())
+            ->whereDate(
+                'EndDate',
+                '<=',
+                now()->copy()->addDays($range)->toDateString()
+            )
+            ->orderBy('EndDate');
 
-    $inactiveCount = SoftwareMaster::whereIn('Status', [
-        'Inactive',
-        'Non Active',
-        ''
-    ])->count();
+        $expiredSoonCount = (clone $expiredSoonQuery)->count();
 
-    $expiredCount = SoftwareMaster::where('Status', 'Expired')->count();
+        $expiredSoonList = (clone $expiredSoonQuery)->get();
 
 
-    return view('software_master.index', [
+        /*
+        |--------------------------------------------------------------------------
+        | STATUS SUMMARY
+        |--------------------------------------------------------------------------
+        | Mengikuti hasil SEARCH
+        | Tidak mengikuti filter status
+        |--------------------------------------------------------------------------
+        */
 
-        'softwareMasters' => $softwareMasters,
+        $activeCount = (clone $baseQuery)
+            ->where('Status', 'Active')
+            ->count();
 
-        'search' => $search,
+        $inactiveCount = (clone $baseQuery)
+            ->whereIn('Status', [
+                'Inactive',
+                'Non Active',
+                ''
+            ])
+            ->count();
 
-        'status' => $status,
+        $expiredCount = (clone $baseQuery)
+            ->where('Status', 'Expired')
+            ->count();
 
-        'range' => $range,
 
-        'expiredSoonCount' => $expiredSoonCount,
+        return view('software_master.index', [
 
-        'expiredSoonList' => $expiredSoonList,
+            'softwareMasters' => $softwareMasters,
 
-        // STATUS CARD
-        'activeCount' => $activeCount,
+            'search' => $search,
 
-        'inactiveCount' => $inactiveCount,
+            'status' => $status,
 
-        'expiredCount' => $expiredCount,
+            'range' => $range,
 
-    ]);
-}
+            'expiredSoonCount' => $expiredSoonCount,
+
+            'expiredSoonList' => $expiredSoonList,
+
+            // STATUS CARD
+            'activeCount' => $activeCount,
+
+            'inactiveCount' => $inactiveCount,
+
+            'expiredCount' => $expiredCount,
+
+        ]);
+    }
 
     /**
      * Show the form for creating a new resource.
